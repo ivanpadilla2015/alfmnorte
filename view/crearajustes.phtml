@@ -1,0 +1,82 @@
+<?php
+Conectar::plantilla_menu();
+$ca=$naj["can"];
+$ca++;
+?>
+
+<div class="container">
+	<div class="well">
+    		<h2 align="center">Crear Ajustes</h2>
+</div>
+
+<form action="" method="post" name="form">
+	
+		<label>Comprobante Ajeste N°</label>
+	    <div class="controls">
+	    	<input type="text" class="span2" name="num" value="<?php echo $ca;?>"  placeholder="Escribe Solo Numeros…" required>
+	    	<span style="color: red" id="mensaje"></span>
+	    </div>
+		<label>Tipo Ajuste</label>
+	     <div class="controls">
+	        <select name="tipo" onchange="tipoajuste(this.value)">
+	        	<option value="0">Seleccionar</option>
+	        	<?php
+	        	foreach($tipa as $t)
+				{
+				?>
+				  <option value="<?php echo $t["id_tipo_a"] ?>"><?php echo $t["Nom_Tipo_Ajuste"];?></option>
+				<?php
+				}
+	        	?>
+	        </select>
+	     </div>
+	    <div class="control-group">
+	       	<label class="control-label" for="select01">Fecha </label>
+	        <div class="controls">
+	        	<input  class="input-small" type="text" id="datepicker"  name="fe" placeholder="Colocar Fecha…" required/> 
+	        </div>
+	    </div>
+	    <label>Detalle</label>
+	    <div class="controls">
+	    	<textarea id="detas" class="span4" rows="5" name="deta" ></textarea>
+	    </div>
+	    <label>Banco</label>
+	     <div class="controls">
+	        <select name="idban">
+	        	<option value="0">Seleccionar</option>
+	        	<?php
+	        	foreach($lb as $l)
+				{
+				?>
+				  <option value="<?php echo $l["id_banco"] ?>"><?php echo $l["nombreban"]." ".$l["cuenta"];?></option>
+				<?php
+				}
+	        	?>
+	        </select>
+	     </div>
+	    <label>Valor</label>
+	    <div class="controls">
+	    	<input type="text" class="span2" name="valo"  placeholder="Solo Numeros" required>
+	    </div>
+	    <label>Nombre Responsable</label>
+	     <div class="controls">
+	        <select name="idusu">
+	        	<option value="0">Seleccionar</option>
+	        	<?php
+	        	foreach($lfus as $f)
+				{
+				?>
+				  <option value="<?php echo $f["id_funcionario"] ?>"><?php echo $f["nombre_func"];?></option>
+				<?php
+				}
+	        	?>
+	        </select>
+	     </div>
+	     <input type="hidden" name="grabar" value="si" />
+	     <button type="submit" class=" btn btn-primary" title="Grabar Cliente">Grabar</button>
+</form>
+    
+</div>
+<?php
+ require_once("public/layout/footer.php")
+?>

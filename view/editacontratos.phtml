@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <title>Editando Contrato</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="<?php echo Conectar::ruta();?>/public/css/zebra_form.css">
+        <script src="<?php echo Conectar::ruta();?>/public/js/jquery-1.8.3.js"></script>
+        <script src="<?php echo Conectar::ruta();?>/public/js/zebra_form.js"></script>
+        <script >
+		function volver()
+		{
+			window.location="<?php echo Conectar::ruta();?>?accion=home"
+		}
+	</script>
+        <style type="text/css">
+        	#formulario
+        	{
+				margin:50px auto;
+				width: 500px;
+				padding: 10px 20px 10px 20px;
+				border-radius:20px;
+				border: 2px dashed #CCC;
+				box-shadow: 0px 0px 5px #000;
+				background: white;
+				
+				}
+        </style>
+ </head>
+
+    <body>
+		<div id="formulario">
+			<?php
+				if(isset($_GET["m"]))
+				{
+					switch($_GET["m"])
+					{
+						       case '3' :
+								   ?>
+								        <h2 style="color: green">Datos Actualizados Satisfactoriemente</h2>
+								   <?php
+					}
+				}
+				// include the Zebra_Form class
+				require '/public/Zebra_Form.php';
+				
+				// instantiate a Zebra_Form object
+				$form = new Zebra_Form('form','post','');
+				
+				// numero de contrato
+				$form->add('label', 'label_contrato', 'contrato', 'Numero Contrato');
+				$obj = &$form->add('text', 'contrato',$dato[0]["num_contrato"]);
+				$obj->set_rule(array( 
+				'required' => array('error', 'Digite Numero Contrato!'), 
+				 'alphanumeric'    =>  array('-', 'error', 'Solo Numeros!'),
+				));
+		        //proveedores
+				$form->add('label', 'label_prov', 'idpro', 'Seleccione Proveedor');
+				$obj = &$form->add('select', 'idpro',$dato[0]["id_proveedor"]);
+				foreach($cevpro as $d)
+				{
+					$data=array($d["id_proveedor"]=>$d["nombre"]);
+					$obj->add_options($data); 
+				}
+				$obj->set_rule(array( 'required' => array('error', 'Seleccione un Proveedor!') ));
+				//tipo contrato
+				$form->add('label', 'label_tcon', 'tipocon', 'Seleccione Tipo Contrato');
+				$obj = &$form->add('select', 'tipocon',$dato[0]["id_tipo_contrato"]);
+				foreach($cetcon as $tc)
+				{  
+					$data=array($tc["id_tipo_contrato"]=>$tc["nombretipo"]);
+					$obj->add_options($data); 
+				}
+				$obj->set_rule(array( 'required' => array('error', 'Seleccione tipo Contrato!') ));
+				// Valor contrato
+				$form->add('label', 'label_vcon', 'vcontra', 'Valor Contrato');
+				$obj = &$form->add('text', 'vcontra',$dato[0]["valorcontrato"]);
+				$obj->set_rule(array( 
+				'required' => array('error', 'Digite Valor del Contrato!'), 
+				 'float'    =>  array('', 'error', 'Solo Numeros!'),
+				));
+				// Valor anticipo
+				$form->add('label', 'label_vanti', 'anticipo', 'Valor Anticipo');
+				$obj = &$form->add('text', 'anticipo',$dato[0]["valoranticipo"]);
+				$obj->set_rule(array('float'    =>  array('', 'error', 'Solo Numeros!')));
+				//fecha anticipo
+				$form->add('label', 'label_fean', 'feanticipo', 'Fecha  Anticipo');
+				$obj = &$form->add('date', 'feanticipo',$dato[0]["fecha_anticipo"]);
+				$obj->set_rule(array('date' => array( 'error','Invalid date!' )));
+				//amortizar
+				$form->add('label', 'label_amort', 'amortiza', 'Valor Amortizar');
+				$obj = &$form->add('text', 'amortiza',$dato[0]["amortizar"]);
+				$obj->set_rule(array('float'    =>  array('', 'error', 'Solo Numeros!')));
+				 //registro				
+				$form->add('label', 'label_regpre', 'regpre', 'Num. Registro Presupuestal');
+				$obj = &$form->add('text', 'regpre',$dato[0]["registro_pres_inic"]);
+				$obj->set_rule(array( 
+				'required' => array('error', 'Digite Num Registro Pres!'), 
+				 'alphanumeric'    =>  array('-', 'error', 'Solo Numeros!'),
+				));
+				//fecha contrato
+				$form->add('label', 'label_fec', 'fecha', 'fecha Contrato');
+				$obj = &$form->add('date', 'fecha',$dato[0]["fechacontrato"]);
+				$obj->set_rule(array('date' => array( 'error','Invalid date!' )));
+				//si peretenese a un inter
+				$form->add('label', 'label_inter', 'ninter', 'Num. del InterAdministrativo');
+				$obj = &$form->add('textarea', 'ninter',$dato[0]["interadmi"]);
+				//Objeto del contrato
+				$form->add('label', 'label_objc', 'objcon', 'Objeto del Contrato');
+				$obj = &$form->add('textarea', 'objcon',$dato[0]["objetocontrato"]);
+				$obj->set_rule(array( 'required' => array('error', 'Escriba Objeto del Contrato!')));
+				//dependencia o oficia
+				$form->add('label', 'label_depe', 'depen', 'Seleccione Dependencia');
+				$obj = &$form->add('select', 'depen',$dato[0]["id_dependencia"]);
+				foreach($cedep as $dp)
+				{  
+					$data=array($dp["id_dependencia"]=>$dp["nombre_depen"]);
+					$obj->add_options($data); 
+				}
+				$obj->set_rule(array( 'required' => array('error', 'Seleccione Dependencia!') ));
+				
+				//fecha Plazo contrato
+				$form->add('label', 'label_fecp', 'fepla', 'Plazo Ejecución Contrato');
+				$obj = &$form->add('date', 'fepla',$dato[0]["plazoejecucion"]);
+				$obj->set_rule(array('date' => array( 'error','Invalid date!' )));
+				
+				$obj = &$form->add('hidden', 'grabar','si');
+				$obj = &$form->add('hidden', 'id',$dato[0]["id_contrato"]);
+				// enviar formulario
+				$form->add('submit', 'btnsubmit', 'Guardar');
+				
+				// validate the form
+				if ($form->validate()) {
+				
+				    // do stuff here
+				 $date = $obj->get_date();
+				}
+				
+				// auto generate output, labels above form elements
+				$form->render();
+				 	?>
+			     <input type="button" value="Volver" onclick="volver()">
+				<?php
+		    ?>
+	</div>
+    </body>
+
+</html>
+
+
+
+

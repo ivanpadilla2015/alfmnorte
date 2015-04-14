@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="content-type" content="text/html" />
+	 <script type="text/javascript" src="<?php echo Conectar::ruta();?>public/js/funcionesjquery.js"></script>
+	<title></title>
+</head>
+
+<body>
+	<!--style="margin: 0 auto; "  border="1"  rules="all"-->
+	<table width="500" class="table table-striped table-bordered table-condensed">
+		<tr>
+			<td>Egreso</td>
+			<td>Fecha</td>
+			<td>Opago</td>
+			<td>Banco</td>
+			<td>Valor</td>
+			<td>Proveedor</td>
+			<td>Detalle</td>
+			<td>F. Junta</td>
+			<td>F. Factura</td>
+			<td>F. Recibido</td>
+		</tr>
+      <?php
+       
+       
+        
+         foreach($ref as $d)
+		 {
+		 	
+       ?>
+		<tr>
+			<td align="left" width="180"><?php echo $d["numegreso"];?></td>
+			<td align="left" width="180"><?php echo $d["fechaegre"];?></td>
+			<td align="left" width="180"><?php echo $d["numorden"];?></td>
+			<td align="left" width="180"><?php echo $d["nombreban"];?></td>
+			<td align="left" width="180"><?php echo number_format($d["valoregre"],2);?></td>
+			<td align="left" width="180"><?php echo $d["nombre"];?></td>
+			<td align="left" width="180"><?php echo $d["detallegre"];?></td>
+			<td align="left" width="180"><?php echo $d["fejunta"];?></td>
+			<td align="left" width="180"><?php echo $d["fefactura"];?></td>
+			<td align="left" width="180"><?php echo $d["ferecibo"];?></td>
+		</tr>
+		
+		<?php
+		 }
+		?>
+		
+		
+	</table>
+
+</body>
+</html>
+

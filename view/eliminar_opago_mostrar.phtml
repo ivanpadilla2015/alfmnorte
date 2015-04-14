@@ -1,0 +1,139 @@
+<?php
+Conectar::plantilla_menu();
+?>
+		<div class="container">
+			<div class="well">
+    			<h2 align="center">Eliminar Ordenes de Pago</h2>
+    		</div>
+    		<!--<div class="well">
+    			<h2 align="center">OJO! TODAVIA NO USAR ESTA APLICACION</h2>
+    		</div>-->
+			<form name="form" action="" method="post" class="form-horizontal">
+		
+			<div class="control-group">
+	            	<label class="control-label" for="select01">Numero Opago</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="numo" value="<?php echo $eopr2["numorden"];?>" placeholder="Colocar Num Opago…" readonly/> 
+	           		</div>
+	          </div>
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Proveedor</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="prove" value="<?php echo $eopr2["nombre"];?>" readonly/> 
+	           		</div>
+	          </div>
+	         
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Fecha Opago</label>
+	           		 <div class="controls">
+	           				<input  class="input-small" type="text" id="datepicker"  name="fe" value="<?php echo $eopr2["fecha"];?>" placeholder="Colocar Fecha…" readonly/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Sub Total</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="number"   name="valorsiva"  value="<?php echo $eopr2["totsiniva"];?>" placeholder="Colocar Valor antes de iva" readonly/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Iva</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="number"   name="valoriva" value="<?php echo $eopr2["valor_iva"];?>"   placeholder="Colocar Valor de iva" readonly/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Total Sin Los Descuentos</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="number"   name="valorsdes"  value="<?php echo  $eopr2["total"];?>"  readonly/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+					<label class="control-label" for="textarea">Detalle</label>
+					<div class="controls">
+						<textarea  class="input-xlarge" name="deta" rows="3" cols="40" readonly><?php echo $eopr2["detalle"];?></textarea>
+					</div>
+			</div>
+  
+    <table width="400">
+			<tr style="background-color: #C0C0C0">
+				<td>Retencion	</td>
+				<td>Porcentaje</td>
+				<td>Base</td>
+				<td>total</td>
+			</tr>
+			<tr >
+						<td>	
+							<select name="rete" id="rete1" readonly>
+						  	<option value="0">Seleccion</option>
+						  	</select>	
+						</td>
+						<td>
+							<input id="retenc1" type="text" name="ret" size="4" readonly/>
+						</td>
+						<td><input  type="text" name="base"  size="10"  onblur="calcular();" readonly/></td>
+						<td><input  type="text" name="total"  size="10" readonly/></td>
+						 <td><a  href="javascript:void(0);"  title="agregar detalle o Ver detalles" > Add</a> </td>
+			</tr>
+	</table>
+		<div  id="reporte">
+				<table width="500" >
+			      <?php
+			       
+			         //print_r($deta);
+			         $s=0;
+			         foreach($edeta1 as $d)
+					 {
+					 	 if ($d["id_retencion"]!=17)
+						   {$s=$s+$d["totalreten"];} 
+			       ?>
+					<tr>
+						<td align="left" width="180"><?php echo $d["Nombre_rete"];?></td>
+						<td  align="center" width="45"><?php echo $d["porcentaje"]; ?></td>
+						<td align="right" width="80"><?php echo $d["base"]; ?></td>
+						<td align="right" width="80"><?php echo $d["totalreten"]; ?></td>
+						<td width="25" ><a href="javascript:void(0)" title="Eliminar Detalle">Eliminar</a></td>
+						
+					</tr>
+					
+					<?php
+					 }
+					?>
+					<tr>
+						<td style="color: red;" align="right" colspan="3">Neto Pagar:</td>
+						<td align="right" ><?php echo number_format($enetpa1["sindes"]-$s,2); ?></td>
+					</tr>
+					
+				</table>
+                <?php
+                	if($eopr2["id_egreso"]>0){
+                		
+						echo '<h3 style="color: green">Primero debe eliminar el Egreso</h3>';
+						echo '<table>
+							<tr>
+								<td style="color: red;" align="right">Egreso No:</td>
+								<td>'." ".$numegr["numegreso"].'</td>
+								<td> = </td>
+								<td>'.number_format($numegr["valoregre"],2).'</td>
+							</tr>
+						</table>';
+                		 
+					}	
+                ?>
+		</div>
+			 <input type="hidden"  name="eliminar"  value="si"/>
+			 <input type="hidden"  name="id_op"  value="<?php echo $eopr2["id_opago"];?>"/>
+			 <input type="hidden"  name="id_obli"  value="<?php echo $eopr2["id_obligacion"];?>"/>
+			 
+			 <div class="form-actions">
+			 	<?php if($eopr2["id_egreso"] == 0){
+	           		 echo '<button type="submit" title="Eliminar Opago" class="btn btn-primary">Eliminar</button>';
+				}
+	           	  ?>
+	            <input class="btn" type="button" title="Cancelar Operación" value=" Cancelar " onclick="volver('<?php Conectar::ruta() ;?>?accion=eliminar_opago')"/>
+          	  </div>
+		</form>
+		
+		
+ <?php
+ require_once("public/layout/footer.php")
+?>

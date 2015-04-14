@@ -1,0 +1,100 @@
+<?php
+require_once("public/fpdf/fpdf.php");
+class PDF extends FPDF
+{
+		
+		//Cabecera de página
+	
+	function Header()
+	{
+	    { $this->Image('public/img/logo.jpg',10,10,25,20);
+			 $this->Image('public/img/alfm.JPG',185,10,20,15);
+			 $this->SetFont('Arial','',9);$this->Ln(3);
+			 $this->Cell(30,5,'',0,0);
+			 $this->Cell(130,5,'MINISTERIO DE DEFENZA NACIONAL',0,0,'C');$this->Ln();
+			 $this->Cell(30,5,'',0,0);
+			 $this->Cell(130,5,'AGENCIA LOGISTICA DE LAS FUERZAS MILITARES ',0,0,'C');$this->Ln();
+			 $this->Cell(30,5,'',0,0);
+			 $this->Cell(130,5,'NIT. 899.999.162-4',0,0,'C');
+			 
+			 
+		}
+	   		
+	    }
+
+	//Pie de página
+	function Footer()
+	{
+	    //Posición: a 1,5 cm del final
+	    //$this->SetXY(-15);
+	  $this->SetXY(10,-15);
+	    //Arial italic 8
+	    $this->SetFont('Arial','I',8);
+	    //Número de página
+	    $this->Cell(35,5,'CODIGO: F17-PGF-S02');
+		$ver='VERSION: 01';
+		$w=$this->GetStringWidth($ver);
+		$this->SetX((200-$w)/2);
+	    $this->Cell($w,5,$ver); 
+		$ver2='FECHA DE VIGENCIA: 11/09/2009';
+		$w=$this->GetStringWidth($ver2)+10;
+		$this->SetX((220-$w));
+		$this->Cell($w,5,$ver2); 
+	}
+}
+
+$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+$fec= $dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y') ;
+/*
+$dia=date('d',strtotime($rcn["fecha"]));
+$mes=date('n',strtotime($rcn["fecha"]))-1;
+$anos=date('Y',strtotime($rcn["fecha"])); 
+
+//$fec=utf8_decode($fec);*/
+$numl=utf8_decode(Conectar::NumeroLetras($aj["valor_ajuste"]));
+$pdf=new PDF('P', 'mm', 'Letter');
+	$pdf->AliasNbPages();
+	$pdf->AddPage();
+	$pdf->Ln(10);
+	$pdf->SetFont('Arial','B',14);
+	$pdf->Cell(195,5,'TESORERIA',0,0,'C');
+	$pdf->SetFont('Arial','B',12);
+	$pdf->Ln(10);
+	$pdf->Cell(5,5,"",0,0);
+	$pdf->Cell(65,5,utf8_decode('COMPROBANTE DE AJUSTE N°'),0,0,'L');$pdf->SetFont('');
+	$pdf->Cell(25,5,$aj["numajuste"],0,0,'C');
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(50,5,"FECHA:",0,0,'R');$pdf->SetFont('');
+	$pdf->Cell(30,5,$aj["fecha_ajuste"],0,0,'C');
+	$pdf->Ln(10);$pdf->Cell(5,5,"",0,0);
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(20,5,"BANCO: ",0,0);$pdf->SetFont('');
+	$pdf->Cell(40,5,"",0,0);
+	$pdf->Cell(65,5,$aj["nombreban"],'B',0);
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(15,5,'CTA No.',0,0,'R');$pdf->SetFont('');
+	$pdf->Cell(30,5,$aj["cuenta"],'B',0,'C');
+	$pdf->Ln(10);
+	$pdf->Cell(5,5,"",0,0);
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(60,5,'LA SUMA DE:',0,0,'L');$pdf->SetFont('');
+	$pdf->MultiCell(113,5,$numl,0,'J');
+	$pdf->Ln(10);
+	$pdf->Cell(140,5,'',0,0);
+	$pdf->Cell(35,5,'$'.number_format($aj["valor_ajuste"],2),'B',0,'R');
+	$pdf->Ln(10);
+	$pdf->Cell(5,5,"",0,0);
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(60,5,'POR CONCEPTO DE:',0,0,'L');$pdf->SetFont('');$pdf->Ln();
+	$pdf->Cell(5,5,"",0,0);
+	$pdf->MultiCell(175,5,$aj["detajuste"],0,'J');
+	$pdf->Ln();$pdf->Ln(25);
+	$pdf->Cell(5,5,"",0,0);
+	$pdf->Cell(60,5,$aj["nombre_func"],'B',0,'C');
+	$pdf->Ln();
+	$pdf->Cell(5,5,"",0,0);
+	$pdf->Cell(60,5,'Nombre Responsable',0,0,'L');
+	
+$pdf->Output();
+?>

@@ -1,0 +1,23 @@
+http://stackoverflow.com/questions/8267858/twitter-bootstrap-date-picker
+
+
+<html>
+    <head>
+    <title>DatePicker Demo</title>
+    <script src="js/jquery-1.7.1.js"></script>
+    <link href="css/datepicker.less" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="js/bootstrap-datepicker.js"></script>
+
+    </script>
+    </head>
+    <body>
+    <form >
+        <div class="input">
+            <input class="small" type="text" value="01/05/2011" data-datepicker="datepicker">
+        </div>
+    </form>
+
+    </body>
+</html>

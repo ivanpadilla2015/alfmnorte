@@ -1,0 +1,192 @@
+<?php
+require_once("public/fpdf/fpdf.php");
+class PDF extends FPDF
+{
+		private $valo="";
+		private $valo3="";
+		private $valof="";
+		private $valoc="";
+		private $valos="";
+		
+		//Cabecera de página
+	function vervalocabe($va,$fe,$cue,$sal)
+	{
+		$this->valo3=$va;
+		$this->valof=$fe;
+		$this->valoc=$cue;
+		$this->valos=$sal;
+	}
+	
+		//Pie de página
+	function vervalo($va)
+	{
+		$this->valo=$va;
+		
+	}
+	
+	function Header()
+	{
+	    { $this->Image('public/img/header_orden_pago.jpg',10,10,195,25);
+			 $this->SetFont('Arial','',9);$this->Ln(20);
+			 $n="LIBRO DE BANCO";
+			 $w=$this->GetStringWidth($n);
+			 $this->SetX((216-$w)/2);
+			 $this->Cell($w,5,$n); $this->Ln();
+			 if ($this->PageNo() == 1)
+			 {
+				$n="LIBRO AUXILIAR DE BANCO ".$this->valo3;;
+				$w=$this->GetStringWidth($n);
+				$this->SetX((216-$w)/2);
+				$this->Cell($w,5,$n); $this->Ln();
+				$n="CUENTA No ".$this->valoc;
+				$w=$this->GetStringWidth($n);
+				$this->SetX((216-$w)/2);
+				$this->Cell($w,5,$n); $this->Ln();
+				$n=$this->valof;
+				$w=$this->GetStringWidth($n);
+				$this->SetX((216-$w)/2);
+				$this->Cell($w,5,$n); $this->Ln();
+			 }				 
+			 $this->Cell(20,5,'FECHA',1,0,'C');
+			 $this->Cell(15,5,'No OP',1,0,'C');
+			 $this->Cell(20,5,'No CH O PE',1,0,'C');
+			 $this->Cell(15,5,'No CE',1,0,'C');
+			 $this->Cell(45,5,'CONCEPTO',1,0,'C');
+			 $this->Cell(25,5,'DEBE',1,0,'C');
+			 $this->Cell(25,5,'HABER',1,0,'C');
+			 $this->Cell(25,5,'SALDO',1,0,'C');
+			 $this->Ln();
+			 $this->Cell(150,5,'VIENE:',0,0,'R');
+			 $this->Cell(25,5,number_format($this->valos,2),0,0,'R');
+			 $this->Ln();
+			 
+		}
+	   		
+	    }
+
+	//Pie de página
+	function Footer()
+	{
+	    //Posición: a 1,5 cm del final
+	    //$this->SetXY(-15);
+	    
+	  $this->SetXY(10,-15);
+	  	$this->Cell(170,5,'PASAN',1,0,'R');
+		$this->Cell(25,5,number_format($this->valo,2),1,0,'R');$this->Ln();
+	    //Arial italic 8
+	    $this->SetFont('Arial','I',8);
+	    //Número de página
+	    $this->Cell(35,5,'CODIGO: F05-PGF-S02');
+		$ver='VERSION: 01';
+		$w=$this->GetStringWidth($ver);
+		$this->SetX((216-$w)/2);
+	    $this->Cell($w,5,$ver); 
+		$ver2='FECHA DE VIGENCIA: 01/04/2009';
+		$w=$this->GetStringWidth($ver2)+10;
+		$this->SetX((216-$w));
+		$this->Cell($w,5,$ver2); 
+		
+	}
+}
+$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+$fec= $dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y') ;
+$fec=$meses[date('n',strtotime($_GET["fe1"]))-1]. " ".date('Y',strtotime($_GET["fe1"]));
+/*$dia=date('d',strtotime($rcn["fecha"]));
+$mes=date('n',strtotime($rcn["fecha"])-1);
+$anos=date('Y',strtotime($rcn["fecha"])); 
+$numl=utf8_decode(Conectar::NumeroLetras($rcn["valorec"]));*/
+//$fec=utf8_decode($fec);
+$s=$salpdf;
+$pdf=new PDF('P', 'mm', 'Letter');
+	$pdf->vervalocabe($sal["nombreban"],$fec,$sal["cuenta"],$s);
+	$pdf->AliasNbPages();
+	$pdf->AddPage();
+	
+	
+	
+	$pdf->SetFont('Arial','',7);
+	
+	$std=0;
+	$sth=0;
+	foreach($ypdf as $l)
+	{
+		$pdf->vervalocabe($sal["nombreban"],$fec,$sal["cuenta"],$s);
+		$pdf->Cell(20,5,$l["fecha"],1,0,'C');
+		$pdf->Cell(15,5,$l["opago"],1,0,'C');
+		$pdf->Cell(20,5,'PE',1,0,'C');
+		if($l["ce"] == 0){
+			$pdf->Cell(15,5," ",1,0,'C');
+		}else{
+			$pdf->Cell(15,5,$l["ce"],1,0,'C');
+		}
+		$pdf->Cell(45,5,substr($l["concepto"].",  ".Conectar::FechaTexto2($l["fecha"]),0,25),1,0,'L');
+		if($l["DC"]==1)
+		{
+		  $pdf->Cell(25,5,number_format($l["valor"],2),1,0,'R');
+		  $s +=$l["valor"];
+		  $std +=$l["valor"];
+		}else
+			{
+				$pdf->Cell(25,5,0,1,0,'R');
+			}
+		if($l["DC"]==2 or $l["DC"]==0)
+		{
+		  $pdf->Cell(25,5,number_format($l["valor"],2),1,0,'R');
+		  $s -=$l["valor"];
+		  $sth +=$l["valor"];
+		}else
+			{
+				$pdf->Cell(25,5,0,1,0,'R');
+			}
+		
+		$pdf->Cell(25,5,number_format($s,2),1,0,'R');
+		$pdf->vervalo($s);
+		$pdf->Ln();
+	}
+	$pdf->Cell(20,5,"",1,0,'C');
+	$pdf->Cell(15,5,"",1,0,'C');
+	$pdf->Cell(20,5,"",1,0,'C');
+	$pdf->Cell(15,5," ",1,0,'C');
+	$pdf->Cell(45,5,"",1,0,'L');
+	$pdf->Cell(25,5,"",1,0,'R');
+	$pdf->Cell(25,5,"",1,0,'R');
+	$pdf->Cell(25,5,"",1,0,'R');$pdf->Ln();
+	//**********************************************
+	$pdf->Cell(20,5,"",1,0,'C');
+	$pdf->Cell(15,5,"",1,0,'C');
+	$pdf->Cell(20,5,"",1,0,'C');
+	$pdf->Cell(15,5," ",1,0,'C');
+	$pdf->Cell(45,5,"SUMAS",1,0,'L');
+	$pdf->Cell(25,5,number_format($std,2),1,0,'R');
+	$pdf->Cell(25,5,number_format($sth,2),1,0,'R');
+	$pdf->Cell(25,5,"",1,0,'R');$pdf->Ln();
+	//*************************
+	$pdf->Cell(20,5,"",1,0,'C');
+	$pdf->Cell(15,5,"",1,0,'C');
+	$pdf->Cell(20,5,"",1,0,'C');
+	$pdf->Cell(15,5," ",1,0,'C');
+	$pdf->Cell(45,5,"SALDO ANTERIOR",1,0,'L');
+	$pdf->Cell(25,5,number_format($salpdf,2),1,0,'R');
+	$pdf->Cell(25,5,"",1,0,'R');
+	$pdf->Cell(25,5,"",1,0,'R');$pdf->Ln();
+	//*************************
+	$pdf->Cell(20,5,"",1,0,'C');
+	$pdf->Cell(15,5,"",1,0,'C');
+	$pdf->Cell(20,5,"",1,0,'C');
+	$pdf->Cell(15,5," ",1,0,'C');
+	$pdf->Cell(45,5,"SALDO QUE PASA",1,0,'L');
+	$pdf->Cell(25,5,"",1,0,'R');
+	$pdf->Cell(25,5,number_format($s,2),1,0,'R');
+	$pdf->Cell(25,5,"",1,0,'R');$pdf->Ln();
+	//*************************
+	$pdf->Cell(20,5,"",1,0,'C');
+	$pdf->Cell(15,5,"",1,0,'C');
+	$pdf->Cell(20,5,"",1,0,'C');
+	$pdf->Cell(15,5," ",1,0,'C');
+	$pdf->Cell(45,5,"SUMAS IGUALES",1,0,'L');
+	$pdf->Cell(25,5,number_format($std+$salpdf,2),1,0,'R');
+	$pdf->Cell(25,5,number_format($sth+$s,2),1,0,'R');
+	$pdf->Cell(25,5,"",1,0,'R');
+$pdf->Output();
+?>

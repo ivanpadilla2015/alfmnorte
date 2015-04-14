@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="content-type" content="text/html" />
+	<title>Proveedores</title>
+</head>
+
+<body>
+<a href="<?php echo Conectar::ruta();?>?accion=home">Volver al Menu Principal<a/>
+<hr />
+<br />
+
+<a href="<?php echo Conectar::ruta();?>?accion=add_proveedor">Agregar Proveedores</a>
+<br />
+<hr />
+<?php// echo print_r($datos);?>
+
+<table>
+	<tr style="background-color:#D8D8D8">
+		<td>Nit</td>
+		<td>Nombre</td>
+		<td>Contacto</td>
+		<td>Correo</td>
+		<td>Telefono</td>
+		<td>Editar</td>
+		<td>Eliminar</td>
+	</tr>
+	<?php
+	foreach($datos as $d)
+	{ 
+	?>
+	<tr >
+		<td><?php echo $d["nitproveedor"];?></td>
+		<td><?php echo $d["nombre"];?></td>
+		<td><?php echo $d["contacto"];?></td>
+		<td><?php echo $d["correo"];?></td>
+		<td><?php echo $d["telefono"];?></td>
+		<td><a href="<?php echo Conectar::ruta();?>?accion=Editarproveedor&id=<?php echo $d["id_proveedor"] ;?>">Editar</a> </td>
+		<td>eliminar</td>
+	</tr>
+	<?php }?>
+</table>
+
+
+
+</body>
+</html>

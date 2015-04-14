@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <title>Listado de Ingresos</title>
+        <meta charset="utf-8">
+       <link rel="stylesheet" type="text/css" href="<?php echo Conectar::ruta();?>public/css/tabla.css" />
+         <script language="javascript" type="text/javascript" src="<?php echo Conectar::ruta();?>public/js/funcionesjquery.js"></script>
+        <style type="text/css">
+        	#formulario
+        	{
+				margin:50px auto;
+				width: 550px;
+				padding: 10px 20px 10px 20px;
+				border-radius:20px;
+				border: 2px dashed #CCC;
+				box-shadow: 0px 0px 5px #000;
+				background: white;
+				
+				}
+			.tabla
+			{
+				width:490px;
+				margin:10px auto;
+			}
+        </style>
+ </head>
+
+    <body>
+		<div id="formulario">
+			<h3 align="center"> Listado de  Ingresos</h3>
+			
+			<table class="tabla">
+					<tr >
+						<th>Ingreso</th>
+						<th>planilla</th>
+						<th>Fecha</th>
+						<th>Valor</th>
+					</tr>
+					<?php 
+					 foreach($lis as $i)
+					 {
+					  ?>
+					 <tr >
+						<td align="center" ><?php echo $i["ningreso"] ;?></td>
+						<td align="center"><?php echo $i["id_planilla"]; ?></td>
+						<td align="center"><?php echo $i["fechain"]; ?></td>
+						<td align="right"><?php echo number_format($i["valorin"],2);?></td>
+						
+					</tr>
+					 <?php	
+					 }
+					?>
+					
+			
+			</table>		
+		     
+		    <center>
+		     <input type="button" value="Volver" onclick="volver('<?php echo Conectar::ruta();?>?accion=home')" />
+		    </center>
+	</div>
+    </body>
+
+</html>

@@ -1,0 +1,42 @@
+<?php
+Conectar::plantilla_menu();
+?>
+		<div class="container">
+			<div class="well">
+    			<h2 align="center">Imprimir Boletin</h2>
+    		</div>
+				 <div class="modal  hide fade " id="myModal" >
+				    <div class="modal-header">
+					    <button  type="button"class="close" title="Cerrar" data-dismiss="modal" aria-hidden="true">×</button>
+					    <h3>Boletines</h3>
+				    </div>
+				    <div class="modal-body">
+				    		    <form class="well" method="post">
+								    <label>Número Boletin</label>
+								   <!-- <input type="text" name="numbol" class="span3" placeholder="Escribe Numero…">
+								    <span class="help-inline">Solo Números!</span><br />-->
+								    <select name="numbol">
+								    	<option value="0">Selecionar Boletin</option>
+								    	<?php
+								    	 foreach($tb as $bo)
+										 {
+										 	$fec=Conectar::Mes_FechaTexto($bo["fecha"]);
+										?>
+								    		<option value="<?php echo $bo["id_boletin"];?>"><?php echo "Boletin :".$bo["numboletin"]." ".$fec." del ".date('Y',strtotime($bo["fecha"])); ?></option>
+								    	<?php
+								    	 }?>
+								    </select>
+								    
+								    <button type="submit" title="Buscar"  class="btn btn-primary">Buscar</button>
+								</form>
+				     </div>
+				    <div class="modal-footer">
+				    	<a href="#" class="btn" title="Cerrar" data-dismiss="modal" >Cerrar</a>
+				     </div>
+		    </div>	
+			<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-large">Imprimir Boletin</a>
+		</div>
+		
+ <?php
+ require_once("public/layout/footer.php")
+?>

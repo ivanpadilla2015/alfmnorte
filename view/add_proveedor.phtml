@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <title>Crar Proveedores</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="<?php echo Conectar::ruta();?>/public/css/zebra_form.css">
+        <script src="<?php echo Conectar::ruta();?>/public/js/jquery-1.8.3.js"></script>
+        <script src="<?php echo Conectar::ruta();?>/public/js/zebra_form.js"></script>
+        <script >
+		function volver()
+		{
+			window.location="<?php echo Conectar::ruta();?>?accion=home"
+		}
+	</script>
+        <style type="text/css">
+        	#formulario
+        	{
+				margin:50px auto;
+				width: 500px;
+				padding: 10px 20px 10px 20px;
+				border-radius:20px;
+				border: 2px dashed #CCC;
+				box-shadow: 0px 0px 5px #000;
+				background: white;
+				
+				}
+        </style>
+ </head>
+
+    <body>
+    	<a href="<?php echo Conectar::ruta();?>?accion=home">Volver a Menu Principal </a>
+		<div id="formulario">
+			
+			<?php
+				if(isset($_GET["m"]))
+				{
+					switch($_GET["m"])
+					{
+						       case '2' :
+								   ?>
+								        <h2 style="color: green">Datos Grabados Satisfactoriemente</h2>
+								   <?php
+					}
+				}
+				// include the Zebra_Form class
+				require '/public/Zebra_Form.php';
+				
+				// instantiate a Zebra_Form object
+				$form = new Zebra_Form('form','post','');
+				
+				// numero de contrato
+				$form->add('label', 'label_nit', 'nit', 'Nit Proveedor');
+				$obj = &$form->add('text', 'nit');
+				$obj->set_rule(array( 
+				'required' => array('error', 'Digito Numero Contrato!'), 
+				 'alphanumeric'    =>  array('-', 'error', 'Solo Numeros!'),
+				));
+				// digito verificacion
+				$form->add('label', 'label_digv', 'digv', 'Digito Verificacion');
+				$obj = &$form->add('text', 'digv');
+				$obj->set_rule(array( 
+				 'alphanumeric'    =>  array('-', 'error', 'Solo Numeros!'),
+				));
+				
+				//Nombre proveedores
+				$form->add('label', 'label_nom', 'nom', 'Nombre Proveedor');
+				$obj = &$form->add('text', 'nom');
+				$obj->set_rule(array( 
+				'required' => array('error', 'Digite Nombre proveedor!'), 
+				 ));
+				//correo proveedores 
+				$form->add('label', 'label_cor', 'correo', 'Correo');
+				$obj = &$form->add('text', 'correo');
+				/*$obj->set_rule(array( 
+				'required' => array('error', 'Digite Correo proveedor!'), 
+				 ));*/
+				 
+				$form->add('label', 'label_tel', 'tel', 'Telefono');
+				$obj = &$form->add('text', 'tel');
+				$obj->set_rule(array( 
+				'required' => array('error', 'Digite Telefono proveedor!'), 
+				 ));
+				 
+				$form->add('label', 'label_dir', 'direcion', 'Dirección');
+				$obj = &$form->add('text', 'direcion');
+				$obj->set_rule(array( 
+				'required' => array('error', 'Digite Dirección proveedor!'), 
+				 ));
+				 
+				$form->add('label', 'label_repr', 'repreleg', 'Representante legal');
+				$obj = &$form->add('text', 'repreleg');
+				$obj->set_rule(array( 
+				'required' => array('error', 'Digite Representante legal proveedor!'), 
+				 ));
+				
+				$form->add('label', 'label_cont', 'contacto', 'Contacto');
+				$obj = &$form->add('text', 'contacto');
+				$obj->set_rule(array( 
+				'required' => array('error', 'Digite Contacto proveedor!'), 
+				 ));
+				
+				$form->add('label', 'label_cuen', 'cuenta', 'Cuenta Bancaria');
+				$obj = &$form->add('text', 'cuenta');
+				$obj->set_rule(array( 
+				'required' => array('error', 'Digite cuenta proveedor!'), 
+				 ));
+				
+				
+		        //proveedores
+				$form->add('label', 'label_tipoper', 'tipoper', 'Seleccione Tipo persona');
+				$obj = &$form->add('select', 'tipoper');
+				foreach($datos as $d)
+				{
+					$data=array($d["id_tipo_per"]=>$d["nompersona"]);
+					$obj->add_options($data); 
+				}
+				$obj->set_rule(array( 'required' => array('error', 'Seleccione Tipo persona Proveedor!') ));
+				
+				
+				$form->add('label', 'label_tipor', 'tiporete', 'Seleccione Tipo Retencion');
+				$obj = &$form->add('select', 'tiporete');
+				foreach($dator as $r)
+				{
+					$data=array($r["id_tipo_reten"]=>$r["nomreten"]);
+					$obj->add_options($data); 
+				}
+				$obj->set_rule(array( 'required' => array('error', 'Seleccione Tipo Retencion Proveedor!') ));
+				
+				
+				$obj = &$form->add('hidden', 'grabar','si');
+				// enviar formulario
+				$form->add('submit', 'btnsubmit', 'Guardar');
+				
+				// validate the form
+				if ($form->validate()) {
+				
+				    // do stuff here
+				 $date = $obj->get_date();
+				}
+				
+				// auto generate output, labels above form elements
+				$form->render();
+				 	?>
+			     <input type="button" value="Volver" onclick="volver()">
+				<?php
+		    ?>
+	</div>
+    </body>
+
+</html>
+
+
+
+
+
+
+
+
+
+<!--*******************************************************************/
+<!DOCTYPE HTML>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="content-type" content="text/html" />
+	<title>Crear Proveedores</title>
+</head>
+
+<body>
+	<h1>Crear Proveedores</h1>
+	<hr />
+	<a href="<?php echo Conectar::ruta();?>?accion=proveedores">Atras</a>
+	<hr />
+	<br	 />
+
+<form action="" method="post">
+	<?php 
+	if (isset($_GET["m"]))
+	{
+		switch ($_GET["m"])
+		 {
+			case '1':
+				 ?>
+				   <h2 style="color: red">Datos en Blanco</h2>
+				 <?php
+				break;
+			case '2':
+				 ?>
+				   <h2 style="color: green">Proveedor Creado Correctamente</h2>
+				 <?php
+				break;
+		}	
+	}
+	?>
+	Nit:<input type="text" name="nit" />
+	Diger:<input type="text"  name="digv" /><br />
+	Nombre: <input type="text" name="nom" /><br />
+	Correo: <input type="text" name="correo" /><br />
+	Telefono: <input type="text" name="tel" /><br />
+	Direccion:<input type="text" name="direcion" /><br />
+	Representatnte Legal: <input type="text" name="repreleg" /><br />
+	Contacto: <input type="text" name="contacto" /><br />
+	Cuenta:<input type="text" name="cuenta" /><br />
+	Tipo Persona:<select name=tipoper>
+		<option value="0">Seleccione</option>
+		<?php
+		foreach($datos as $d)
+		{?>
+			<option value="<?php echo $d["id_tipo_per"];?>" ><?php echo $d["nompersona"];?></option>
+		<?php	
+		}
+		?>
+		
+	</select><br />
+	Tipo Retencion: <select name=tiporete>
+		<option value="0">Seleccione</option>
+		<?php
+		foreach($dator as $r)
+		{?>
+			<option value="<?php echo $r["id_tipo_reten"];?>" ><?php echo $r["nomreten"];?></option>
+		<?php	
+		}
+		?>
+	</select><br />
+	<input type="hidden" name="grabar" value="si" />
+	<input type="submit" value="crear" />
+	
+</form>
+
+
+</body>
+</html>

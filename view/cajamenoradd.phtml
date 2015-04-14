@@ -1,0 +1,75 @@
+<?php
+Conectar::plantilla_menu();
+?>
+<div class="container">
+				
+	<div class="well">
+    			<h2 align="center"> Crear Caja Menor </h2>
+    </div>
+    <form name="form1" action="" method="post" class="form-horizontal">
+		
+			<div class="control-group">
+	            	<label class="control-label" for="select01">Numero Caja Menor</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="numcj" autofocus="" required=""/> 
+	           		</div>
+	          </div>
+	         <div class="control-group">
+	         	<label class="control-label" >Proveedor</label>
+	         	<div class="controls">
+		          <select name="prov" >
+		          	 <option value="0" >Seleccionar</option>
+		          	 <?php foreach($lp as $p){ ?>
+		          	 	<option value="<?php echo $p["id_proveedor"];?>" ><?php echo $p["nombre"];?></option>
+		          	 <?php } ?>	
+		          </select>
+		        </div>   
+	        </div>          
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Fecha </label>
+	           		 <div class="controls">
+	           				<input  class="input-small" type="text" id="datepicker"  name="fe" required=""/> 
+	           		</div>
+	         </div> <
+	          <div class="row">
+	          	<div class="span8">
+	          		<table class="table table-striped">
+			         	<tr>
+			         		<th>Retencion</th>
+			         		<th>Porcentaje</th>
+			         		<th>base</th>
+			         		<th>total</th>
+			         	</tr>
+			         	<tr>
+			         		<td>
+			         			<select name="rete" id="rete1">
+								  	<option value="0">Seleccion</option>
+								  	<?php
+								  	$s=0;
+								  	   foreach($re as $d)
+									   {
+									?>   	
+									    	<option value="<?php echo $d["id_reten"] ?>"><?php echo $d["Nombre_rete"] ?></option>
+									<?php	
+									   }
+								  	?>
+						  		</select>	
+						  </td>
+			         		<td><input id="retenc1" type="text" name="ret" size="4" readonly/></td>
+			         		<td><input  type="text" name="base"  size="10"  onblur="calcular();"/></td>
+			         		<td><input  type="text" name="total"  size="10"/></td>
+			         	</tr>
+			        </table>
+	          	</div>
+	          </div>
+	         
+	           	
+    </form>
+    
+    
+    
+    
+ </div>
+ <?php
+ require_once("public/layout/footer.php")
+?>

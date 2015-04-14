@@ -1,0 +1,50 @@
+<?php
+Conectar::plantilla_menu();
+//numplanilla, fecha, valorplanilla
+?>
+<div class="container">
+
+		<div class="well">
+			<h3 align="center">Listado de Planillas x Legalizar(Cartera)</h3>
+    	</div>
+   
+			<table class="table table-striped">
+					<tr >
+						<th>Planilla</th>
+						<th>fecha</th>
+						<th>Valor</th>
+						<th>Estado</th>
+						<th></th>
+					</tr>
+					<?php 
+					//numplanilla, fecha, valorplanilla
+					//echo sizeof($lisp);
+					 
+					 foreach($lisp as $l)
+					 {
+					 	  $v=$plc->versilegal($l["id_planilla"]);
+						  if($v>=1)// para obtener las que los detalles no estan llenos o legalizados por cartera
+						  {
+					  ?>
+								 <tr >
+									<td align="center" ><?php echo $l["numplanilla"] ;?></td>
+									<td align="center"><?php echo $l["fecha"]; ?></td>
+									<td align="right"><?php echo number_format($l["valorplanilla"],2);?></td>
+									<td align="center"><a href="<?php echo Conectar::ruta();?>?accion=legalizapla_deta&plaid=<?php echo $l["id_planilla"] ;?>">Legalizar</a> </td>
+									  <td></d>
+								</tr>
+					 <?php	
+						  }
+					 }
+					?>
+					
+			
+			</table>		
+		     
+		    <center>
+		     <input type="button" value="Volver" onclick="volver('<?php echo Conectar::ruta();?>?accion=home')" />
+		    </center>
+	</div>
+ <?php
+ require_once("public/layout/footer.php")
+ ?>

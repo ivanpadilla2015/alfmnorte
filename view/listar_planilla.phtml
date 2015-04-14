@@ -1,0 +1,41 @@
+<?php
+Conectar::plantilla_menu();
+
+?>
+<div class="container">
+
+		<div class="well">
+			
+			<h3 align="center"> Listado de Planillas</h3>
+    	</div>
+    	<table class="table table-striped">
+		    <thead>
+			    <tr>
+			    <th>Planilla</th>
+			    <th>Fecha</th>
+			    <th>Valor</th>
+			    <th>Legalizada</th>
+			    </tr>
+		    </thead>
+		    <tbody>
+		    	<?php 
+		    	foreach($lpli as $p)
+				{//id_planilla, numplanilla, fecha, valorplanilla, legalizada
+				?>	
+				    <tr>
+					    <td><?php echo $p["numplanilla"]; ?></td>
+					    <td><?php echo $p["fecha"]; ?></td>
+					    <td><?php echo $p["valorplanilla"]; ?></td>
+					    <td><?php echo $p["legalizada"]; ?></td>
+				    </tr>
+				  <?php
+				    }
+				 ?>
+		    </tbody>
+	    </table>
+
+
+ </div>  
+<?php
+ require_once("public/layout/footer.php");
+?> 

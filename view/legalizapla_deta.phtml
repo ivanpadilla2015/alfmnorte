@@ -1,0 +1,156 @@
+<?php
+Conectar::plantilla_menu();
+?>
+<div class="container">
+
+		<div class="well">
+			
+			<h3 align="center">Item(s) de Planilla N° <?php echo $_GET["plaid"]  ;?> x Legalizar</h3>
+    	</div>
+    	<table class="table table-striped">
+				<tr >
+						<th>Id</th>
+						<th>Banco</th>
+						<th>Fecha</th>
+						<th>Valor</th>
+						<th>Cuenta</th>
+						<th>Concepto</th>
+						<th>Funcionario</th>
+					</tr>
+					<?php 
+					 foreach($pdq as $f)
+					 {
+					 							
+					 ?>
+								 <tr >
+									<td align="center" ><?php echo $f["id_detaplanilla"] ;?></td>
+									<td align="left"><?php echo $f["nombreban"]; ?></td>
+									<td align="center"><?php echo $f["fechadeta"]; ?></td>
+									<td align="right"><?php echo number_format($f["valordeta"],2);?></td>
+									<td align="center"><?php echo $f["id_cuenta"]; ?></td>
+									<td align="center"><?php echo $f["concepto"]; ?></td>
+									<td align="center"><?php echo $f["id_funcionario"]; ?></td>
+									<td align="center"> <input type="button" value="Legalizar" title="Legalizar Iten de Planilla" onclick="crear('<?php echo $f["id_detaplanilla"] ;?>')" /></td>
+									<td align="center"> <input type="button" value="Legalizar Serv." title="Legalizar Iten de Planilla Solo Servitiendas" onclick="crear2('<?php echo $f["id_detaplanilla"] ;?>')" /></td>
+								</tr>
+					 <?php	
+					 }
+					?>
+					
+			
+			</table>		
+		     <div  id="reporte"></div>
+		    <center>
+		     <input type="button" value="Volver" onclick="volver('<?php echo Conectar::ruta();?>?accion=legalizaplanilla')" />
+		    </center>
+	</div>
+	<!-- ********************************************************************-->
+	<div id="dialog" title="Legalizar Planilla" style="display:none">
+			    <form action="" method="post" name="form">
+				  <p>
+				  <strong> Cuenta:</strong><select name="cuen">
+				  					<option value="0">Seleccionar..:</option>
+				  					<?php 
+				  					//<button id="opener">Legalizar</button>
+				  					  foreach($cus as $c) {							  	
+				  					?>
+				  						<option value="<?php echo $c["id_cuenta"];?>"><?php echo $c["nombrecuenta"];?></option>
+				  					<?php
+									  }	?>	
+				  			  </select>
+				  	</p>
+				  	
+			       <strong>Concepto: </strong> 
+			       <textarea name="conc" rows="3" cols="35"></textarea>
+			       </p>
+			       <p>
+			       <strong> Funcionarios:</strong><select name="fun">
+				  					<option value="0">Seleccionar..:</option>
+				  					<?php 
+				  					  foreach($fus as $c) {							  	
+				  					?>
+				  						<option value="<?php echo $c["id_funcionario"];?>"><?php echo $c["nombre_func"];?></option>
+				  					<?php
+									  }	?>	
+				  			  </select>
+			      </p>
+			      <input type="hidden" name="grabar" value="si" />
+			      <input type="hidden" name="ideta"  />
+			      <input type="hidden" name="plaid" value="<?php echo $_GET["plaid"]  ;?> "  />
+				</form>
+	
+		</div>
+		<div id="dialog2" title="Legalizar Planilla" style="display:none">
+			    <form action="" method="post" name="form2">
+				  <p>
+				  <strong> Cuenta:</strong><select name="cuen">
+				  					<option value="0">Seleccionar..:</option>
+				  					<?php 
+				  					//<button id="opener">Legalizar</button>
+				  					  foreach($cus as $c) {							  	
+				  					?>
+				  						<option value="<?php echo $c["id_cuenta"];?>"><?php echo $c["nombrecuenta"];?></option>
+				  					<?php
+									  }	?>	
+				  			  </select>
+				  	</p>
+				  	<strong> Acta N° :</strong>
+				  	<strong><input type="text" name="acta" /></strong><br />
+				  	<strong> Fecha Dc:</strong>
+				  	<strong><input type="text" id="datepicker" name="fecd" /></strong>
+				  	<table>
+				  		<tr>
+				  			<td>Merc. Grab 16%</td>
+				  			<td><input type="text" name="m16" value="0" onblur="calcular_form();"/></td>
+				  		</tr>
+				  		<tr>
+				  			<td>iva 16%</td>
+				  			<td><input type="text" name="iva16" value="0" onblur="calcular_form();"/></td>
+				  		</tr>
+				  		<tr>
+				  			<td>Merc. Grab 5%</td>
+				  			<td><input type="text" name="m5" value="0" onblur="calcular_form();"/></td>
+				  		</tr>
+				  		<tr>
+				  			<td>iva 5%</td>
+				  			<td><input type="text" name="iva5" value="0" onblur="calcular_form();"/></td>
+				  		</tr>
+				  		<tr>
+				  			<td>Merc. No Grab</td>
+				  			<td><input type="text" name="mno" value="0" onblur="calcular_form();"/></td>
+				  		</tr>
+				  		<tr>
+				  			<td>Concesiones</td>
+				  			<td><input type="text" name="vconc" value="0" onblur="calcular_form();"/></td>
+				  		</tr>
+				  		<tr>
+				  			<td><strong>Total</strong></td>
+				  			<td ><input style="color: #DF0101" type="text" name="tota" value="0" onblur="calcular_form();"/></td>
+				  		</tr>
+				  		
+				  	</table>
+				  	<div id="letra" ></div>
+			       <strong>Concepto: </strong> 
+			       <textarea name="conc" rows="3" cols="80" ></textarea>
+			       </p>
+			       <p>
+			       <strong> Funcionarios:</strong><select name="fun">
+				  					<option value="0">Seleccionar..:</option>
+				  					<?php 
+				  					  foreach($fus as $c) {							  	
+				  					?>
+				  						<option value="<?php echo $c["id_funcionario"];?>"><?php echo $c["nombre_func"];?></option>
+				  					<?php
+									  }	?>	
+				  			  </select>
+			      </p>
+			      <input type="hidden" name="grabar" value="si" />
+			      <input type="hidden" name="ideta"  />
+			      <input type="hidden" name="plaid" value="<?php echo $_GET["plaid"]  ;?> "  />
+			      <input type="submit" value="Grabar" />
+				</form>
+	
+		</div>
+<?php
+ require_once("public/layout/footer.php")
+?>

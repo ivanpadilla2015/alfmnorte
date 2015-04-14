@@ -1,0 +1,24 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Ingresos</h2>
+    </div>
+  <form action="" method="post" name="form">  
+   <center>
+	    Entre
+	    <input  class="fechajquery"   type="text"  name="feini" placeholder="Fecha Inicial…" required/> y
+			        
+		<input  class="fechajquery"   type="text"  name="fefin" placeholder="Fecha Final…" required/> 
+		<input class="btn btn-primary" type="button" " value=" Procesar " title="Procesar" onclick="repor_ingreso(document.form.feini.value,document.form.fefin.value)" />
+	 </center>    
+   </form> 
+    
+    <div id="reporte_lib"></div>
+</div>
+
+<?php
+ require_once("public/layout/footer.php")
+?>

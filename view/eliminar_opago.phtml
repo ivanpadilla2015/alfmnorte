@@ -1,0 +1,30 @@
+<?php
+Conectar::plantilla_menu();
+?>
+		<div class="container">
+			<div class="well">
+    			<h2 align="center">Eliminar Ordenes de Pago</h2>
+    		</div>
+				 <div class="modal  hide fade " id="myModal" >
+				    <div class="modal-header">
+					    <button  type="button"class="close" title="Cerrar" data-dismiss="modal" aria-hidden="true">×</button>
+					    <h3>Eliminar Ordenes de Pago</h3>
+				    </div>
+				    <div class="modal-body">
+				    		    <form class="well" method="post">
+								    <label>Número Opago</label>
+								    <input type="text" name="numopago" class="span3" placeholder="Escribe Numero…">
+								    <span class="help-inline">Solo Números!</span><br />
+								    <button type="submit" title="Buscar"  class="btn btn-primary">Buscar</button>
+								</form>
+				     </div>
+				    <div class="modal-footer">
+				    	<a href="#" class="btn" title="Cerrar" data-dismiss="modal" >Cerrar</a>
+				     </div>
+		    </div>	
+			<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-large">Eliminar Opago</a>
+		</div>
+		
+ <?php
+ require_once("public/layout/footer.php")
+?>

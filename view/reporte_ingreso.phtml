@@ -1,0 +1,158 @@
+<?php
+require_once("public/fpdf/fpdf.php");
+class PDF extends FPDF
+{
+		
+		//Cabecera de página
+	
+	function Header()
+	{ 
+	    $this->Image('public/img/header_control_pago.jpg',10,10,250,20);
+		$this->Ln();
+		$this->Ln(20);
+			 
+			 
+		
+	   		
+	}
+
+	//Pie de página
+	function Footer()
+	{
+	    $this->SetXY(10,-15);
+	    //Arial italic 8
+	    $this->SetFont('Arial','I',8);
+	    //Número de página
+	    $this->Cell(35,5,'CODIGO: F16-PGF-S02');
+		$ver='VERSION: 01';
+		$w=$this->GetStringWidth($ver);
+		$this->SetX((279-$w)/2);
+	    $this->Cell($w,5,$ver); 
+		$ver2='FECHA DE VIGENCIA: 011/09/2009';
+		$w=$this->GetStringWidth($ver2)+10;
+		$this->SetX((279-$w));
+		$this->Cell($w,5,$ver2); 
+	}
+}
+
+$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+$fec= $dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y') ;
+/*
+$dia=date('d',strtotime($rcn["fecha"]));
+$mes=date('n',strtotime($rcn["fecha"]))-1;
+$anos=date('Y',strtotime($rcn["fecha"])); 
+
+//$fec=utf8_decode($fec);*/
+//$numl=utf8_decode(Conectar::NumeroLetras($aj["valor_ajuste"]));
+$pdf=new PDF('L', 'mm', 'Letter');
+	$pdf->AliasNbPages();
+	$pdf->AddPage();
+	$pdf->Ln(10);
+	$pdf->SetFont('Arial','B',12);
+	$W=$pdf->GetStringWidth(utf8_decode('COMPROBANTE DE INGRESO N°'))+6;
+	$pdf->Cell($W,5,utf8_decode('COMPROBANTE DE INGRESO N°:'),0,0,'L');$pdf->SetFont('');
+	$pdf->SetFont('times','',20);
+	$pdf->Cell(25,5,$_GET["idnumi"],0,0,'C');$pdf->SetFont('');
+	$pdf->SetFont('Arial','',12);
+	$pdf->Cell($W,5,'',0,0);
+	$pdf->Cell(30,5,'FECHA :',0,0,'R');
+	$pdf->SetFont('Arial','',10);
+	$pdf->Cell(30,5,$tin[0]["fechain"],0,0,'L');
+	$pdf->SetFont('Arial','B',8);
+	$pdf->Ln(10);
+	$pdf->SetFillColor(192,192,192);
+	$pdf->Cell(40,5,'RECIBIDO DE:',1,0,'C',true);
+	$pdf->Cell(75,5,'CONCEPTO',1,0,'C',true);
+	$pdf->Cell(25,5,'BANCO',1,0,'C',true);
+	$pdf->Cell(20,5,'CTA',1,0,'C',true);
+	$pdf->Cell(20,5,'FECHA',1,0,'C',true);
+	$pdf->Cell(25,5,'VALOR',1,0,'C',true);
+	$pdf->Cell(20,5,'CTA CONT.',1,0,'C',true);
+	$pdf->Cell(35,5,'FUNCIONARIO',1,0,'C',true);
+	$pdf->Ln();
+	foreach($ting as $tg)
+	{
+		$idb=$tg["id_banco"];
+		 
+		foreach($tin as $t)
+		{
+			if($t["id_banco"]==$idb)
+			{
+				$pdf->SetFont('Arial','',8);
+				$pdf->Cell(40,10,$t["nombrecuenta"],1,0);
+				$y = $pdf->GetY();/*La función GetY nos guardará la posición de Y dentro del documento y lo almacenamos en una variable, al terminar de escribir la descripción regresamos nuestra posición a este valor para que las demas columnas aparezcan alineados con el resto.*/
+				$pdf->SetFont('Arial','',7);
+				$pdf->MultiCell(75,3,$t["concepto"],'T','J'); $pdf->SetXY(125,$y);
+				$pdf->SetFont('');
+				$pdf->SetFont('Arial','',7);
+				$pdf->Cell(25,10,$t["nombreban"],1,0);
+				$pdf->SetFont('Arial','',8);
+				$pdf->Cell(20,10,$t["cuenta"],1,0,'R');
+				$pdf->Cell(20,10,$t["fechadeta"],1,0);
+				$pdf->Cell(25,10,number_format($t["valordeta"],2),1,0,'R');
+				$pdf->Cell(20,10,$t["codigo"],1,0);
+				$pdf->Cell(35,10,$t["nombre_func"],1,0);
+				$cue=$t["cuenta"];
+				$pdf->Ln(10);
+			}
+		}
+		$pdf->SetFillColor(192,192,192);
+		$pdf->Cell(260,5,'TOTAL CTA No'.$cue.'     '.number_format($tg["valord"],2),1,0,'C',true);
+		$pdf->Ln();$pdf->Ln();
+	}
+	$pdf->SetFillColor(192,192,192);
+	$pdf->Cell(260,5,'TOTAL CTA(S) :  '.number_format($tles["valorin"],2),1,0,'L',true);
+	$pdf->Ln();$pdf->Ln();
+	$numl=utf8_decode(Conectar::NumeroLetras($tles["valorin"]));	
+	$numl=ucwords($numl);
+	$W=$pdf->GetStringWidth($numl)+6;
+	$pdf->Ln();
+	$pdf->SetFont('Arial','B',12);
+	$pdf->Cell(30,5,'LA SUMA DE:',0,0);
+	$pdf->SetFont('');
+	$pdf->Cell($W,5,$numl,0,0);
+	$pdf->Ln(20);
+	$pdf->Cell(60,5,$tles["nombre_func"],'T',0);
+	$pdf->Ln();
+	$pdf->Cell(30,5,'Auxiliar de Tesoreria',0,0);
+		 /*
+		
+	}
+	 
+	 /*
+	 * p.id_planilla, p.id_banco, b., b. , p., p.valordeta,p.id_cuenta, c., c., p., p.id_funcionario
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(50,5,"FECHA:",0,0,'R');$pdf->SetFont('');
+	$pdf->Cell(30,5,$aj["fecha_ajuste"],0,0,'C');
+	$pdf->Ln(10);$pdf->Cell(5,5,"",0,0);
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(20,5,"BANCO: ",0,0);$pdf->SetFont('');
+	$pdf->Cell(40,5,"",0,0);
+	$pdf->Cell(65,5,$aj["nombreban"],'B',0);
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(15,5,'CTA No.',0,0,'R');$pdf->SetFont('');
+	$pdf->Cell(30,5,$aj["cuenta"],'B',0,'C');
+	$pdf->Ln(10);
+	$pdf->Cell(5,5,"",0,0);
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(60,5,'LA SUMA DE:',0,0,'L');$pdf->SetFont('');
+	$pdf->MultiCell(113,5,$numl,0,'J');
+	$pdf->Ln(10);
+	$pdf->Cell(140,5,'',0,0);
+	$pdf->Cell(35,5,'$'.number_format($aj["valor_ajuste"],2),'B',0,'R');
+	$pdf->Ln(10);
+	$pdf->Cell(5,5,"",0,0);
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(60,5,'POR CONCEPTO DE:',0,0,'L');$pdf->SetFont('');$pdf->Ln();
+	$pdf->Cell(5,5,"",0,0);
+	$pdf->MultiCell(175,5,$aj["detajuste"],0,'J');
+	$pdf->Ln();$pdf->Ln(25);
+	$pdf->Cell(5,5,"",0,0);
+	$pdf->Cell(60,5,$aj["nombre_func"],'B',0,'C');
+	$pdf->Ln();
+	$pdf->Cell(5,5,"",0,0);
+	$pdf->Cell(60,5,'Nombre Responsable',0,0,'L');
+	*/
+$pdf->Output();
+?>

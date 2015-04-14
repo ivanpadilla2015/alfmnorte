@@ -1,0 +1,181 @@
+<?php
+require_once("public/fpdf/fpdf.php");
+class PDF extends FPDF
+{
+			private $ima="";
+		//Cabecera de página
+	function vercabe($ver)
+	{
+		$this->ima=$ver;
+		self::header();
+	}
+	function Header()
+	{
+	    //Logo
+	    //global $ima;
+	    
+		if($this->ima=="si")
+			{    
+				 $this->Image('public/img/header_orden_pago.jpg',5,5,205,30);
+			 /*$this->SetFont('Arial','B',11);
+			 $this->SetXY(10,30);
+			 $w=$this->GetStringWidth('CONTROL DE PAGOS')+6;
+			 $this->SetX((279-$w)/2);
+			 $this->Cell($w,5,'CONTROL DE PAGOS');
+			 $this->SetFont('');*/
+			}
+	   		
+	    }
+
+	//Pie de página
+	function Footer()
+	{
+	    //Posición: a 1,5 cm del final
+	    //$this->SetXY(-15);
+	    $this->SetXY(10,-25);
+	    //Arial italic 8
+	    $this->SetFont('Arial','I',8);
+	    //Número de página
+	    $this->Cell(35,5,'CODIGO: F05-PGF-S01');
+		$ver='VERSION: 01';
+		$w=$this->GetStringWidth($ver);
+		$this->SetX((216-$w)/2);
+	    $this->Cell($w,5,$ver); 
+		$ver2='FECHA DE VIGENCIA: 20/09/2010';
+		$w=$this->GetStringWidth($ver2)+10;
+		$this->SetX((216-$w));
+		$this->Cell($w,5,$ver2); 
+	}
+	
+}
+// $dias[date('w',$date)]
+//array(216,279) carta vertical
+//array(216,356) oficio vertical
+$numl=utf8_decode(Conectar::NumeroLetras($opn["total"]));
+$fec=Conectar::FechaTexto(date('Y-m-d')); // fecha actual
+$fe2= Conectar::FechaTexto($opn["fecha"]); // fecha de la base de datos
+//$texto=utf8_decode($io[0]["detalle"]);
+$fec=utf8_decode($fec);
+$pdf=new PDF('P', 'mm', 'Legal');
+	$pdf->vercabe("si");
+	$pdf->AliasNbPages();
+	$pdf->AddPage();
+	$pdf->SetLineWidth(0.5);
+	$pdf->Rect(5, 5, 207, 330 );
+	$pdf->Ln(30);
+	$pdf->SetFont('Arial','',12);
+	$pdf->Cell(40,5,"ORDEN DE PAGO");
+	$pdf->SetX(160);
+	$pdf->Cell(10,5,"No");
+	$pdf->Cell(10,5,$opn["numorden"]);
+	$pdf->Ln();
+	$pdf->Cell(50,5,"DEPENDENCIA :");
+	$pdf->Cell(40,5,"CADENA DE SUMINISTRO",0,0,"R");
+	$pdf->Ln();
+	$pdf->Cell(30,5,"FONDOS :");
+	$pdf->Cell(29,5,"COMUNES",0,0,"R");
+	$pdf->Ln();
+	$pdf->Cell(35,5,"MALAMBO :");
+	$pdf->Cell(50,5,$fe2);
+	$pdf->Ln();
+	$pdf->SetX(100);
+	$pdf->Cell(50,5,"COMPROBANTE DE EGRESO No:__________________");
+	$pdf->Ln();
+	$pdf->Ln();
+	$pdf->Cell(50,5,"AGENCIA LOGISTICA DE LAS FUERZAS MILITARES DEBE  A");
+	$pdf->Ln();
+	$pdf->Ln();
+	$pdf->Cell(56,5,"NOMBRE DEL ACREEDOR :");
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(50,5,$opn["nombre"]);
+	$pdf->SetFont('');
+	$pdf->Ln();
+	$pdf->SetFont('Arial','',12);
+	$pdf->Cell(40,5,"CEDULA O NIT No.");
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(50,5,$opn["nitproveedor"]);
+	$pdf->SetFont('');
+	$pdf->Ln();
+	$pdf->Ln();
+	$pdf->Rect(5, 91, 207, 10 );
+	$pdf->SetFont('Arial','',12);
+	$pdf->Cell(140,5,"POR EL SIGUIENTE CONCEPTO",0,0,"R");
+	$pdf->Cell(62,5,"VALOR       ",0,0,"R");
+	$pdf->Ln();
+	$pdf->Ln();
+	$pdf->MultiCell(140,5,$opn["detalle"],0,"J");
+	$pdf->Ln();
+	$pdf->Cell(140,5,"SUBTOTAL",0,0,"R");
+	$pdf->Cell(62,5,number_format($opn["totsiniva"],2),0,0,"R");
+	$pdf->Ln();
+	$pdf->Cell(140,5,"VR IVA",0,0,"R");
+	$pdf->Cell(62,5,number_format($opn["valor_iva"],2),0,0,"R");
+	$pdf->Ln();
+	$pdf->Cell(140,5,"TOTAL",0,0,"R");
+	$pdf->Cell(62,5,number_format($opn["total"],2),0,0,"R");
+	$pdf->Ln();
+	foreach($detop as $dt)
+	{	$pdf->Cell(140,5,$dt["Nombre_rete"]. " ".$dt["porcentaje"]."%",0,0,"R");
+		$pdf->Cell(62,5,number_format($dt["totalreten"],2),0,0,"R");
+		$pdf->Ln();
+	}
+	$pdf->Cell(140,5,"VR A GIRAR",0,0,"R");
+	$pdf->Cell(62,5,number_format($opn["neto_pagar"],2),0,0,"R");
+	//*******************************CUADRO***********************
+	$pdf->Ln();
+	$pdf->Ln();
+	$pdf->Cell(110,5,"",0,0,"R");
+	$pdf->Cell(92,7,"PAGADO","LT",0,"C");
+	$pdf->Ln();
+	$pdf->Cell(110,7,"",0,0,"R");
+	$pdf->Cell(92,7,"FORMA DE PAGO ______________________","L",0,"R");
+	$pdf->Ln();
+	$pdf->Cell(110,7,"",0,0,"R");
+	$pdf->Cell(92,7,"BANCO:                  ______________________","L",0,"R");
+	$pdf->Ln();
+	$pdf->Cell(110,7,"",0,0,"R");
+	$pdf->Cell(92,7," FECHA : ","LB",0,"L");
+	$pdf->Ln();
+	$pdf->Ln();
+	$pdf->SetX(5);
+	$pdf->Cell(207,7,"SON: ".$numl,1,0,"L");
+	$pdf->Ln();
+	$pdf->Ln();
+	$TD="MARTHA RODRIGUEZ ROBLES";
+	$PD="ELSY MARGARITA GUEVARA OSORIO";
+	$CARGT="Tesorera Encargada Regional Norte";
+	$CARGP="Responsable Presupuesto Regional Norte";
+	$JEFE="MY(r)LUIS RAMON OVALLE MEJIA";
+	$CARJE="Director Regional Norte";
+	$pdf->Cell(5,5,"TD. ".$TD);
+	$pdf->SetX(120);
+	$pdf->Cell(40,5,"PD. ".$PD);
+	$pdf->Ln();
+	$pdf->Cell(5,5,$CARGT);
+	$pdf->SetX(120);
+	$pdf->Cell(5,5,$CARGP);
+	$pdf->Ln();
+	$pdf->Ln(15);
+	$pdf->SetX((216/2)-30);
+	$pdf->Cell(5,5,$JEFE);
+	$pdf->Ln();
+	$pdf->SetX((216/2)-23);
+	$pdf->Cell(5,5,$CARJE);
+	$pdf->SetFont('');
+	$pdf->Ln();
+	$pdf->Ln();
+	$pdf->SetFont('Arial','',8);
+	$pdf->Cell(50,5,"Junta No.","B",0,"L");
+	$pdf->Ln();
+	$pdf->Cell(50,5,"Reviso:","B",0,"L");
+	$pdf->Ln();
+	$pdf->Cell(50,5,"Clasificacion No","B",0,"L");
+	$pdf->SetX(140);
+	$pdf->Cell(70,5,"Recibi","B",0,"L");
+	$pdf->Ln();
+	$pdf->Cell(50,5,"Elaboro","B",0,"L");
+	$pdf->SetX(140);
+	$pdf->Cell(70,5,"C.C, No.",0,0,"L");
+	$pdf->Output();
+
+?>

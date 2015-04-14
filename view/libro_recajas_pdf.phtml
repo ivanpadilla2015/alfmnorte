@@ -1,0 +1,99 @@
+<?php
+require_once("public/fpdf/fpdf.php");
+class PDF extends FPDF
+{
+		private $valo="";
+		
+		//Cabecera de página
+	function vervalo($va)
+	{
+		$this->valo=$va;
+		
+	}
+		//Cabecera de página
+	
+	function Header()
+	{
+	    { $this->Image('public/img/header_orden_pago.jpg',10,10,195,25);
+			 $this->SetFont('Arial','',9);$this->Ln(20);
+			 $n="LIBRO DIARIO DE CAJA";
+			 $w=$this->GetStringWidth($n);
+			 $this->SetX((216-$w)/2);
+			 $this->Cell($w,5,$n); $this->Ln(10);
+			 $this->Cell(20,5,"",'LTR',0,'c');
+			 $this->Cell(50,5,"",'LTR',0,'c');
+			 $this->Cell(50,5,"INGRESOS",1,0,'C');
+			 $this->Cell(70,5,"EGRESOS",1,0,'C');
+			 $this->Ln();
+			 $this->Cell(20,5,"FECHA",'LBR',0,'C'); 
+			 $this->Cell(50,5,"BENEFICIARIO",'LBR',0,'C');
+			 $this->Cell(20,5,"No RECAJA",1,0,'C');
+			 $this->Cell(30,5,"VALOR",1,0,'C');
+			 $this->Cell(40,5,"BANCO",1,0,'C');
+			 $this->Cell(30,5,"V. CONSIGNACION",1,0,'C');
+			 $this->Ln();
+			 
+			 
+		}
+	   		
+	    }
+
+	//Pie de página
+	function Footer()
+	{
+	    //Posición: a 1,5 cm del final
+	    //$this->SetXY(-15);
+	    
+	  $this->SetXY(10,-15);
+	  	//$this->Cell(170,5,'PASAN',1,0,'R');
+		//$this->Cell(25,5,number_format($this->valo,2),1,0,'R');$this->Ln();
+	    //Arial italic 8
+	    $this->SetFont('Arial','I',8);
+	    //Número de página
+	    $this->Cell(35,5,'CODIGO: F08-PGF-S02');
+		$ver='VERSION: 01';
+		$w=$this->GetStringWidth($ver);
+		$this->SetX((216-$w)/2);
+	    $this->Cell($w,5,$ver); 
+		$ver2='FECHA DE VIGENCIA: 01/04/2009';
+		$w=$this->GetStringWidth($ver2)+10;
+		$this->SetX((216-$w));
+		$this->Cell($w,5,$ver2); 
+		
+	}
+}
+
+$pdf=new PDF('P', 'mm', 'Letter');
+	$pdf->AliasNbPages();
+	$pdf->AddPage();
+	$s=0;
+	foreach($lrpdf as $p)
+	{
+		$pdf->Cell(20,5,$p["fecha"],1,0,'C'); 
+		$pdf->Cell(50,5,$p["nombrecli"],'LBR',0,'L');
+		$pdf->Cell(20,5,$p["numrecaja"],1,0,'C');
+		$pdf->Cell(30,5,number_format($p["valorec"],2),1,0,'R');
+		$pdf->Cell(40,5,substr($p["nombreban"], 0,9)." ".$p["cuenta"],1,0,'L');
+		$pdf->Cell(30,5,number_format($p["valorec"],2),1,0,'R');
+		$pdf->Ln();
+		$s +=$p["valorec"];
+	}
+	$pdf->Cell(70,5,"SALDO ANTERIOR",1,0,'L'); 
+	$pdf->Cell(50,5,"0.00",1,0,'R'); 
+	$pdf->Cell(70,5,"",1,0,'R');$pdf->Ln();
+	$pdf->Cell(70,5,"VALOR RECIBO DE CAJA",1,0,'L'); 
+	$pdf->Cell(50,5,number_format($s,2),1,0,'R'); 
+	$pdf->Cell(70,5,"",1,0,'R');$pdf->Ln();
+	$pdf->Cell(70,5,"VALOR CONSIGNACION",1,0,'L'); 
+	$pdf->Cell(50,5,"",1,0,'R'); 
+	$pdf->Cell(70,5,number_format($s,2),1,0,'R');$pdf->Ln();
+	$pdf->Cell(70,5,"PASA EN CAJA",1,0,'L'); 
+	$pdf->Cell(50,5,"",1,0,'R'); 
+	$pdf->Cell(70,5,"0.00",1,0,'R');$pdf->Ln();
+	$pdf->Cell(70,5,"SUMAS IGUALES",1,0,'L'); 
+	$pdf->Cell(50,5,number_format($s,2),1,0,'R'); 
+	$pdf->Cell(70,5,number_format($s,2),1,0,'R');$pdf->Ln();
+	
+	
+$pdf->Output();
+?>

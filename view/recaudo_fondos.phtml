@@ -1,0 +1,23 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Cuadro de Ingresos</h2>
+    </div>
+    <form action="" method="post" name="form">  
+	    <center>
+	    	 Fecha
+		    <input  class="fechajquery"   type="text"  name="fec" placeholder="Fecha Buscar…" required/> 
+			<input class="btn btn-primary" type="button" " value=" Procesar " title="Procesar" onclick="ingresos_recajas(document.form.fec.value)" />
+		</center>
+	</form>		
+	<a href="javascript:void(0);" title="Pasar a Pdf" onclick="volver('<?php Conectar::ruta() ;?>?accion=recaudo_fondos_pdf&fe1='+document.form.fec.value)">Pdf</a>  
+    <div id="buscar"></div>
+    
+</div>
+
+<?php
+ require_once("public/layout/footer.php")
+?>

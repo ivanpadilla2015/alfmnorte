@@ -1,0 +1,62 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<form name="form" action="" method="post" class="form-horizontal">
+		
+		<div class="control-group">
+	            <label class="control-label" for="select01">Contrato </label>
+	            <div class="controls">
+	              <select name="contra" id="select01" autofocus>
+	              	 <option value="">Seleccione.....</option>
+	              	 <?php foreach($tcad as $d)
+					 	{
+					 ?>
+					    <option value="<?php echo $d["id_contrato"];?>"><?php echo $d["num_contrato"]." => ".substr($d["nombre"],0, 25); ?></option>
+					 <?php
+						}
+					 ?>
+	               </select>
+	            </div>
+	          </div>
+	         
+	           <div class="control-group">
+	            	<label class="control-label" for="select01">Fecha Adición</label>
+	           		 <div class="controls">
+	           				<input  class="input-small" type="text" id="datepicker"  name="fecha" placeholder="Colocar Fecha…" required/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Valor Adición</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="number"   name="va_adi" placeholder="Colocar Valor…" required /> 
+	           		</div>
+	          </div>
+	           <div class="control-group">
+	            	<label class="control-label" for="select01">Registro Nuevo</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="num_re" placeholder="Colocar Reg Press…" required/> 
+	           		</div>
+	          </div>
+	           <div class="control-group">
+	            	<label class="control-label" for="select01">Fecha Registro</label>
+	           		 <div class="controls">
+	           				<input  class="input-small" type="text" id="datepicker"  name="fe_re" value="<?php echo  date("Y/m/d"); ?>"  required/> 
+	           		</div>
+	          </div>
+	          <input type="hidden" name="grabar" value="si" />
+	          <div class="form-actions">
+	            <button type="submit" class="btn btn-primary">Guardar Adición</button>
+	            <input class="btn" type="button" " value=" Volver " onclick="volver('<?php echo Conectar::ruta();?>?accion=home')"/>
+          	</div>
+          	
+    </form>
+	
+</div>
+
+
+
+<?php
+ require_once("public/layout/footer.php")
+?>

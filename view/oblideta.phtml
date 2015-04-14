@@ -1,0 +1,175 @@
+<?php 
+//print_r($o);
+?>
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	
+		<title>Detalle del Control de la Obligacion</title>
+<!--  centrar tablas style="margin: 0 auto;" --> 
+<link rel="stylesheet" href="<?php echo Conectar::ruta();?>public/css/jquery-ui.css" />
+   <script src="<?php echo Conectar::ruta();?>public/js/jquery-1.8.3.js"></script>
+   <script src="<?php echo Conectar::ruta();?>public/js/jquery-ui.js"></script>
+   <link rel="stylesheet" href="<?php echo Conectar::ruta();?>public/css/demos.css" />
+   <script language="javascript" type="text/javascript" src="<?php echo Conectar::ruta();?>public/js/funciones.js"></script>
+<script  language="JavaScript" type="text/javascript">
+	 function ejecu()
+	 {
+	 	 document.form.submit();
+	 }
+	 function valorar()
+	 {
+	 	 document.form.valorpagar.value=0;
+	 }
+	 $(function() {
+	$( "#datepicker" ).datepicker({ altFormat: "yy-mm-dd" });
+	});
+	 
+</script>
+<style type="text/css">
+  body{
+  	margin: 20px;
+  }
+  
+	form{
+		width:753px;
+		background-color: #035292;
+		color:#FBF9EE;
+		border-radius: 10px;
+	}
+	
+</style>
+</head>
+
+<body>
+<a href="<?php echo Conectar::ruta();?>?accion=controlobligacion">Volver Pagina Anterior</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="<?php echo Conectar::ruta();?>?accion=home">Volver Menu Principal</a>
+<h1 > Detalles del Control de la Obligación</h1>	
+<table width="500">
+	<tr>
+		<td> <strong>Obligacion N°</strong> </td><td><?php echo $o[0]["id_obligacion"];?> </td>
+	</tr>
+	<tr>
+		<td><strong>Contrato N°</strong></td><td><?php echo $o[0]["num_contrato"];?></td>
+	</tr>
+	<tr>
+		<td><strong>Pproveedor </strong></td><td><?php echo $o[0]["nombre"];?></td>
+	</tr>
+	<tr>
+		<td><strong>Fecha Control Obligacion<strong></td><td><?php echo $o[0]["fechaobliga"];?></td>
+	</tr>
+	<tr>
+		<td><strong>Total Obligacion<strong></td><td>$<?php echo number_format($o[0]["totalobliga"],2);?></td>
+	</tr>
+	<tr>
+		<td><strong>Por Facturar<strong></td><td>$<?php echo number_format($o[0]["saldo"],2);?></td>
+			<!-- Ojo Cuando hay amortizacionecho number_format($o[0]["saldo"]+$o[0]["valoranticipo"]+$o[0]["valoradicion"],2)-->
+	</tr>
+	<tr>
+		<td><strong>Porcentaje Amortizar<strong></td><td>$<?php echo number_format($o[0]["amortizar"],2);?></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><strong>CONCEPTO </strong></td>
+	</tr>
+	<tr>
+		<td align="justify" colspan="2" align="center"><?php echo $o[0]["detalle"];?></td>
+	</tr>
+</table> 
+<hr />
+<hr />
+<a href="<?php echo Conectar::ruta();?>?accion=controlobligacion">Volver Pagina Anterior</a>
+ &nbsp;&nbsp;&nbsp;Saldo de Contrato:$<?php echo number_format($o[0]["saldo"],2);?>
+  &nbsp;&nbsp;<strong>Porcentaje Amortizar:<strong>$<?php echo number_format($o[0]["amortizar"],2);?>
+<form  name="form" action="" method="post">
+	 <h3 align="center"> Detalles del Control Obligación</h3>
+ <table>
+ 	<tr>
+ 		<td>Fecha</td>
+ 		<td>Altas</td>
+ 		<td>Facturas</td>
+ 		<td>Valor</td>
+ 		<td>Valor a Desctar del Item</td>
+ 	</tr>
+ 	<tr>
+ 		<td ><input type="text" id="datepicker" name="fecha" /></td>
+ 		<td><input type="text" name="alta" autofocus/></td>
+ 		<td><input type="text" name="factura" /></td>
+ 		<td><input type="text" name="valor" onblur="valorar()"/></td>
+ 		<td><input type="text" name="valorpagar" /></td>
+ 	</tr>
+ 	
+ 	                       
+ 	<input type="hidden" value="si" name="agregar" />
+ 	<input type="hidden" name="amortizar" value="<?php echo $o[0]["amortizar"];?>"  />
+ 	<input type="hidden" name="vanticipo" value="<?php echo $o[0]["valoranticipo"];?>"  />
+ 	<input type="hidden" name="vadicion" value="<?php echo $o[0]["valoradicion"];?>"  />
+   <input type="hidden" name="porfac" value="<?php echo $o[0]["saldo"];?>"  />
+ 	<input type="hidden"  name="id_obli" value="<?php echo $o[0]["id_obligacion"];?>"/>
+ 	<input type="hidden"  name="sal" value="<?php echo $o[0]["saldo"];?>"/>
+ 	<input type="hidden"  name="tobliga" value="<?php echo $o[0]["totalobliga"];?>"/>
+ 	<input type="hidden"  name="id_contra" value="<?php echo $o[0]["id_contrato"];?>"/>
+ 	 	
+ 	<input type="button" value="Agregar Detalle" title="Agregar detalle" onclick="ejecu()"/>
+ </table>	
+</form>
+
+<hr />
+<hr />
+<?php 
+//print_r($vo);
+//echo sizeof($vo);
+
+?>
+
+<table  width="700" >
+	<tr style="background-color: #E0ECFF;">
+		<td>Fecha</td>
+		<td>Altas</td>
+		<td>Facturas</td>
+		<td>Valor</td>
+		<td>Sal. Por Amortizar</td>
+		<td>Valor a Pagar</td>
+		<td>Por Facturar </td>
+		<td>Eliminar</td>
+	</tr>
+	<?php
+	$s=0;
+	$s2=0;
+	 foreach($vo as $d)
+	 {
+	 	$s=$s+$d["valor"];
+		$s2=$s2+$d["val_apagar"];
+	 ?>
+	 <tr>
+		<td  width="100"><?php echo $d["fechadeta"];?></td>
+		<td align="center" width="100"><?php echo $d["altas"];?></td>
+		<td width="100"><?php echo $d["facturas"];?></td>
+		<td align="right" width="100"><?php echo number_format($d["valor"],2);?></td>
+		<td align="right" width="100"><?php echo number_format($d["sdo_amortizo"],2);?></td>
+		<td align="right" width="100"><?php echo number_format($d["val_apagar"],2);?></td>
+		<td align="right" width="100"><?php echo number_format($d["porfacturar"],2);?></td>
+		<td width="100"><a href="javascript:void(0);" title="Eliminar Detalle" onclick="eliminar('<?php echo Conectar::ruta();?>?accion=elim_deta_obli&ido=<?php echo $d["id_deta_obliga"];?>&id=<?php echo $o[0]["id_obligacion"];?>
+			&tobliga=<?php echo $o[0]["totalobliga"];?>&valor=<?php echo $d["valor"] ?>&idc=<?php echo $o[0]["id_contrato"];?>&sal=<?php echo $o[0]["saldo"];?>');">Eliminar </a></td>
+	</tr>
+	
+   <?php
+     
+	 }
+  ?>
+  <tr>
+		<td align="right" colspan="4"> <strong>Total </strong> $<?php echo number_format($s,2);?></td>
+		<td align="right" colspan="2"> <strong style="color: red">Total  Pagar</strong> $<?php echo number_format($s2,2);?></td>
+	</tr>
+  </table>
+  <br /><br /><br />
+  
+  <a href="<?php echo Conectar::ruta();?>?accion=reporte_control_obliga&imp=<?php echo $o[0]["id_obligacion"];?>">Imprimir Documento para Obligación Modelo1</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="<?php echo Conectar::ruta();?>?accion=reporte_control_pagos&imp=<?php echo $o[0]["id_obligacion"];?>">Imprimir Solo Control pago Modelo1</a><br /><br />
+  <a href="<?php echo Conectar::ruta();?>?accion=reporte_control_obliga2&imp=<?php echo $o[0]["id_obligacion"];?>">Imprimir Documento para Obligación Modelo2</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="<?php echo Conectar::ruta();?>?accion=reporte_control_pagos2&imp=<?php echo $o[0]["id_obligacion"];?>">Imprimir Solo Control pago Modelo2</a><br /><br />
+  <a href="<?php echo Conectar::ruta();?>?accion=reporte_control_obliga3&imp=<?php echo $o[0]["id_obligacion"];?>">Imprimir Documento para Obligación Modelo3</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="<?php echo Conectar::ruta();?>?accion=reporte_control_pagos3&imp=<?php echo $o[0]["id_obligacion"];?>">Imprimir Solo Control pago Modelo3</a><br /><br />
+  <a href="#">Imprimir Acta Liquidación del Contrato</a>
+</body>
+</html>

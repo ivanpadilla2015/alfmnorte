@@ -1,0 +1,205 @@
+<?php
+set_time_limit(0);
+    ob_start(); /* La función ob_start() sirve para indicarle a PHP que se ha de iniciar el buffering de la salida, es decir, 
+				  que debe empezar a guardar la salida en un bufer interno, en vez de enviarla al cliente. 
+				  De modo que, aunque se escriba código HTML con echo o directamente fuera del código PHP, no se 
+				  enviará al navegador hasta que se ordene explícitamente. O eventualmente, hasta que se acabe el 
+				  procesamiento de todo el archivo PHP.*/
+ $s=$salpdf;
+ $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+ $fec=$meses[date('n',strtotime($_GET["fe1"]))-1]. " ".date('Y',strtotime($_GET["fe1"]));
+?>
+<page backtop="10%" backbottom="5%" backleft="5%" backright="5%">
+		 <page_header>
+             <div align="center"> <IMG SRC="public/img/header_orden_pago.jpg" width="780" height="90"></div>
+         	 <table cellspacing="0" style="padding: 1px; width: 100%;" >
+	         		<tr>
+	         			<td style="width: 100%; text-align: center;font-family: Arial;font-size: 9;">LIBRO DE BANCO</td>
+	         			
+	         		</tr>
+	         		<tr>
+	         			<td style="width: 100%; text-align: center;font-family: Arial;font-size: 9;">LIBRO AUXILIAR DE BANCO<?php echo "  ".$sal["nombreban"] ?></td>
+	         		</tr>
+	         		<tr>
+	         			<td style="width: 100%; text-align: center;font-family: Arial;font-size: 9;">CUENTA<?php echo "  ".$sal["tipo_cuenta"]." No ".$sal["cuenta"] ?></td>
+	         		</tr>
+	         		<tr>
+	         			<td style="width: 100%; text-align: center;font-family: Arial;font-size: 9;"><?php echo $fec ?></td>
+	         		</tr>
+	         		<tr>
+	         			<td style="width: 100%; text-align: right;font-size: 11;">VIENE:<?php echo " ".number_format($s,2)?></td>
+	         		</tr>
+	         		
+	         	</table>
+	         	<table cellspacing="0" style="padding: 1px; width: 100%; border: solid 2px #000000; font-size: 11pt; >
+					<tr >
+						<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8">FECHA</th>
+						<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">No OP</th>
+						<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center" >No CH O PE</th>
+						<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">No CE</th>
+						<th style="width: 20%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">CONCEPTO</th>
+						<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">DEBE</th>
+						<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">HABER</th>
+						<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">SALDO</th>
+					</tr>
+				</table>
+	     </page_header>
+	     <page_footer>
+            <table cellspacing="0" style="padding: 1px; width: 100%;  font-size: 8pt;>
+            	<tr>
+            		<td style="width: 33%; font-size: 8pt;">CODIGO: F05-PGF-S02</td>
+            		<td style="width: 33%; font-size: 8pt;" align="center">VERSION: 01</td>
+            		<td style="width: 33%; font-size: 8pt;" align="right">FECHA DE VIGENCIA: 01/04/2009</td>
+            	</tr>
+            </table>
+            
+          </page_footer>
+         <br /><br /><br /><br />
+         <table cellspacing="0" style="padding: 1px; width: 100%; border: solid 2px #000000; font-size: 11pt; >
+			<tr >
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8">FECHA</th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">No OP</th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center" >No CH O PE</th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">No CE</th>
+				<th style="width: 20%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">CONCEPTO</th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">DEBE</th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">HABER</th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 11;" bgcolor="#D8D8D8" align="center">SALDO</th>
+			</tr>
+			<?php
+			$std=0;
+			$sth=0;
+			foreach($ypdf as $l)
+			{ ?>
+				<tr >
+					<td style="width: 12%; border: solid 1px #000000;font-size: 10;"><?php echo $l["fecha"];?></td>
+					<td style="width: 12%; border: solid 1px #000000;font-size: 10;" align="center"><?php echo $l["opago"];?></td>
+					<td style="width: 12%; border: solid 1px #000000;" align="center" >PE</td>
+					<td style="width: 12%; border: solid 1px #000000;" align="center">
+						<?php
+							if($l["ce"] == 0){
+								echo " ";
+							}else{
+								echo $l["ce"];
+							}
+						?>
+					</td>
+					<td style="width: 20%; border: solid 1px #000000; font-size: 10;" align="left">
+						<?php echo $l["concepto"].",  ".Conectar::FechaTexto2($l["fecha"]);?>
+					</td>
+					<td style="width: 12%; border: solid 1px #000000;font-size: 10;" align="right">
+					   <?php
+						   if($l["DC"]==1)
+							{
+							  echo number_format($l["valor"],2);
+							  $s +=$l["valor"];
+							  $std +=$l["valor"];
+							}else
+								{
+									echo 0;
+								}
+						?>
+					</td>
+					<td style="width: 12%; border: solid 1px #000000;font-size: 10;" align="right">
+						<?php 
+							if($l["DC"]==2 or $l["DC"]==0)
+							{
+							  echo number_format($l["valor"],2);
+							  $s -=$l["valor"];
+							  $sth +=$l["valor"];
+							}else
+								{
+									echo 0;
+								}
+						?>
+					</td>
+					<td style="width: 8%; border: solid 1px #000000;font-size: 10;" align="right">
+						<?php echo number_format($s,2);?>
+					</td>
+				</tr>
+			<?php }?>
+			<tr >
+				<td style="width: 12%; border: solid 1px #000000; color: #FFFFFF">no se ve</td>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 20%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+			</tr>
+				<tr >
+				<td style="width: 12%; border: solid 1px #000000;"></td>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 20%; border: solid 1px #000000;font-family: Arial;font-size: 10;" align="left">SUMAS</th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" bgcolor="#D8D8D8" align="center"></th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" bgcolor="#D8D8D8" align="center"></th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" align="center"></th>
+			</tr>
+			<tr >
+				<td style="width: 12%; border: solid 1px #000000;"></td>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 20%; border: solid 1px #000000;font-family: Arial;font-size: 10;" align="left">SALDO ANTERIOR</th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" bgcolor="#D8D8D8" align="center"></th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" align="center"></th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" align="center"></th>
+			</tr>
+			<tr >
+				<td style="width: 12%; border: solid 1px #000000;"></td>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 20%; border: solid 1px #000000;font-family: Arial;font-size: 10;" align="left">SALDO QUE PASA</th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" align="center"></th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" bgcolor="#D8D8D8" align="center"></th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" align="center"></th>
+			</tr>
+			<tr >
+				<td style="width: 12%; border: solid 1px #000000;"></td>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 12%; border: solid 1px #000000;"></th>
+				<th style="width: 20%; border: solid 1px #000000;font-family: Arial;font-size: 10;" align="left">SUMAS IGUALES</th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" bgcolor="#D8D8D8" align="center"></th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" bgcolor="#D8D8D8" align="center"></th>
+				<th style="width: 12%; border: solid 1px #000000;font-family: Arial;font-size: 10;" align="center"></th>
+			</tr>
+		 </table>
+		
+         <page_footer>
+         	
+            <table cellspacing="0" style="padding: 1px; width: 100%;  font-size: 8pt;>
+            	<tr>
+            		<td style="width: 33%; font-size: 8pt;">CODIGO: F05-PGF-S02</td>
+            		<td style="width: 33%; font-size: 8pt;" align="center">VERSION: 01</td>
+            		<td style="width: 33%; font-size: 8pt;" align="right">FECHA DE VIGENCIA: 01/04/2009</td>
+            	</tr>
+            </table>
+            
+          </page_footer>
+	 	  
+		 	   
+         
+</page>		 	  
+	 	  
+<?php    
+    $content = ob_get_clean();
+
+    // convert in PDF
+    require_once('public/html2pdf//html2pdf.class.php');
+    try
+    {
+        $html2pdf = new HTML2PDF('P', 'LETTER', 'es');
+//      $html2pdf->setModeDebug();
+        $html2pdf->setDefaultFont('Arial');
+        $html2pdf->writeHTML($content);
+        $html2pdf->Output('lbanco.pdf');
+    }
+    catch(HTML2PDF_exception $e) {
+        echo $e;
+        exit;
+    }

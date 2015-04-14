@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="content-type" content="text/html" />
+	 <script type="text/javascript" src="<?php echo Conectar::ruta();?>public/js/funcionesjquery.js"></script>
+	<title></title>
+</head>
+
+<body>
+	<!--style="margin: 0 auto; "  border="1"  rules="all"-->
+	<table width="500" >
+      <?php
+       
+         //print_r($deta);
+         $s=0;
+         foreach($deta as $d)
+		 {
+		 	 if ($d["id_retencion"]!=17)
+			   {$s=$s+$d["totalreten"];} 
+       ?>
+		<tr>
+			<td align="left" width="180"><?php echo $d["Nombre_rete"];?></td>
+			<td  align="center" width="45"><?php echo $d["porcentaje"]; ?></td>
+			<td align="right" width="80"><?php echo $d["base"]; ?></td>
+			<td align="right" width="80"><?php echo $d["totalreten"]; ?></td>
+			<td width="25" ><a href="javascript:void(0)" title="Eliminar Detalle" onclick="eliminar('<?php echo $d["id_opago"] ;?>','<?php echo $d["id_deta"] ;?>',
+				'<?php echo $d["totalreten"]; ?>','<?php echo $d["id_retencion"]; ?>','reporte','controller/elim_deta_opaController.php')">Eliminar</a></td>
+			
+		</tr>
+		
+		<?php
+		 }
+		?>
+		<tr>
+			<td style="color: red;" align="right" colspan="3">Neto Pagar:</td>
+			<td align="right" ><?php echo number_format($netpa["sindes"]-$s,2); ?></td>
+		</tr>
+		
+	</table>
+
+</body>
+</html>
+

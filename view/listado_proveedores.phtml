@@ -1,0 +1,48 @@
+<?php
+
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Listado de Proveedores</h2>
+    </div>
+	<table class="table table-striped">
+	    <thead>
+	    <tr>
+		    <th>Nombre </th>
+		    <th>Nit</th>
+		    <th>Correo</th>
+		    <th>Telefono</th>
+		    <th>Direccion</th>
+		    <td>cuenta</td>
+	    </tr>
+	    </thead>
+    <tbody>
+    	<?php 
+    	    foreach($lpro as $l)
+			{
+    	?>
+	    <tr>
+		    <td><?php echo $l["nombre"];?></td>
+		    <td><?php echo $l["nitproveedor"];?></td>
+		    <td><?php echo $l["correo"];?></td>
+		    <td><?php echo $l["telefono"];?></td>
+		    <td><?php echo $l["direccion"];?></td>
+		    <td><?php echo $l["Cuenta"];?></td>
+	    </tr>
+	      <?php } ?>
+    </tbody>
+    </table>
+
+
+	
+	
+</div>
+
+
+
+<?php
+ require_once("public/layout/footer.php")
+?>
+

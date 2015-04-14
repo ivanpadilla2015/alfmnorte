@@ -1,0 +1,102 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Crear Opago Independiente</h2>
+    </div>
+    <?php
+				if(isset($_GET["m"]))
+				{
+					switch($_GET["m"])
+					{
+						       case '2' :
+								   ?>
+								        <h2 style="color: green">Datos Grabados Satisfactoriemente</h2>
+								   <?php
+					}
+				}
+					
+	?>
+	<form name="form" action="" method="post" class="form-horizontal">
+		
+			<div class="control-group">
+	            	<label class="control-label" for="select01">Numero Opago</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="numo" onblur="buscaropago(this.value)" autofocus  autocomplete="off" placeholder="Colocar Num Opago…" required/> 
+	           				<span style="color: red" id="mensaje"></span>
+	           		</div>
+	          </div>
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Proveedor</label>
+	           		 <div class="controls">
+				    	<select name="idp">
+			                 <option value="0">Seleccione</option>
+			                  <?php 
+			                   	   foreach($busp as $b)
+								   {							   	
+			                 ?>
+			                  		   <option value="<?php echo $b["id_proveedor"];?>"><?php echo $b["nombre"];?></option>
+			                 <?php
+									}
+			                 ?>  
+			           	</select>
+		     		 </div>
+	          </div>
+	         		     	
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Contrato</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="cont" value="<?php echo "N/A";?>" readonly/> 
+	           		</div>
+	          </div>
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Fecha Opago</label>
+	           		 <div class="controls">
+	           				<input  class="input-small" type="text" id="datepicker"  name="fe" placeholder="Colocar Fecha…" required/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Sub Total</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="valorsiva"   placeholder="Colocar Valor antes de iva" required/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Iva</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="valoriva"   placeholder="Colocar Valor de iva" required/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Total Sin Los Descuentos</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="valorsdes"  /> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+					<label class="control-label" for="textarea">Detalle</label>
+					<div class="controls">
+						<textarea  class="input-xlarge" name="deta" rows="3" cols="40"></textarea>
+					</div>
+			</div>
+	          
+	          
+	          <input type="hidden"  name="grabar"  value="si"/>
+			 	 
+	          <div class="form-actions">
+	            <button type="submit" class="btn btn-primary">Agregar Detalle</button>
+	            <input class="btn" type="button" " value=" Volver " onclick="volver('<?php Conectar::ruta() ;?>?accion=home')"/>
+          	  </div>
+          	
+    </form>
+	
+</div>
+
+
+
+<?php
+ require_once("public/layout/footer.php")
+?>
+

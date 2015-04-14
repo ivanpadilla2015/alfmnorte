@@ -1,0 +1,29 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Exportar Egresos a  Excel</h2>
+    </div>
+
+<form action="" method="post" name="form">
+	
+	       	<label class="control-label" for="select01">Entre las Fechas</label>
+	        <div class="controls">
+		        <input  class="fechajquery"   type="text"  name="feini" placeholder="Fecha Inicial…" required/> 
+		        
+		        <input  class="fechajquery"   type="text"  name="fefin" placeholder="Fecha Final…" required/> 
+		    </div>
+		       
+		 <input type="hidden" name="procesar" value="si" />
+		 <input class="btn btn-primary" type="button" " value=" Procesar " title="Procesar" onclick="repor_egre_exe(document.form.feini.value,document.form.fefin.value)"/>
+	     
+	   
+</form>
+<div id="repomostrar" ></div>
+</div>
+
+<?php
+ require_once("public/layout/footer.php")
+?>

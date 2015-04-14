@@ -1,0 +1,130 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<a href="<?php Conectar::ruta() ;?>?accion=ordenpagocrear">Crear Opagos</a>&nbsp;&nbsp;&nbsp;
+	<a href="<?php Conectar::ruta() ;?>?accion=opagoslistado">Listado de Ordenes Pagos</a>
+			
+	<div class="well">
+    			<h2 align="center"> Documentos  a Pagar N° <?php echo $op["0"]["id_obligacion"] ;?></h2>
+    </div>
+    <?php
+				if(isset($_GET["m"]))
+				{
+					switch($_GET["m"])
+					{
+						       case '2' :
+								   ?>
+								        <h2 style="color: green">Datos Grabados Satisfactoriemente</h2>
+								   <?php
+					}
+				}
+					
+	?>
+	<form name="form1" action="" method="post" class="form-horizontal">
+		
+			<div class="control-group">
+	            	<label class="control-label" for="select01">Numero Opago</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="numo" value="<?php echo $op["0"]["numorden"];?>" readonly/> 
+	           		</div>
+	          </div>
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Proveedor</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="prov" value="<?php echo $op["0"]["nombre"];?>" readonly/> 
+	           		</div>
+	          </div>
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Contrato</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="cont" value="<?php echo $op["0"]["num_contrato"];?>" readonly/> 
+	           		</div>
+	          </div>
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Fecha Opago</label>
+	           		 <div class="controls">
+	           				<input  class="input-small" type="text" id="datepicker"  name="fe" value="<?php echo $op["0"]["fecha"];?>" readonly/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Sub Total</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="number"   name="valorsiva"   value="<?php echo $op["0"]["totsiniva"];?>" readonly/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Iva</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="number"   name="valoriva" value="<?php echo $op["0"]["valor_iva"];?>" readonly/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Total Sin Los Descuentos</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="number"   name="valorsdes"  value="<?php echo number_format($op["0"]["total"],2);?>" readonly size="12"/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+					<label class="control-label" for="textarea">Detalle</label>
+					<div class="controls">
+						<textarea  class="input-xlarge" name="deta" rows="3" cols="40"><?php echo $op["0"]["detalle"];?></textarea>
+					</div>
+			</div>
+	           	
+    </form>
+    <table width="400">
+			<tr style="background-color: #C0C0C0">
+				<td>Retencion	</td>
+				<td>Porcentaje</td>
+				<td>Base</td>
+				<td>total</td>
+			</tr>
+			<form name="form" action="" method="post">
+					<tr >
+						<td>	
+							<select name="rete" id="rete1">
+						  	<option value="0">Seleccion</option>
+						  	<?php
+						  	$s=0;
+						  	   foreach($re as $d)
+							   {
+							?>   	
+							    	<option value="<?php echo $d["id_reten"] ?>"><?php echo $d["Nombre_rete"] ?></option>
+							<?php	
+							   }
+						  	?>
+						  </select>	
+						</td>
+						<td>
+							<input id="retenc1" type="text" name="ret" size="4" readonly/>
+						</td>
+						<td><input  type="text" name="base"  size="10"  onblur="calcular();"/></td>
+						<td><input  type="text" name="total"  size="10"/></td>
+						 <td><a  href="javascript:void(0);"  title="agregar detalle o Ver detalles" onclick="from_post('<?php echo $op["0"]["id_opago"]?>',
+							document.form.base.value,document.form.rete.value,document.form.total.value,document.form.ret.value,'reporte','controller/opagosdetagraController.php')" > Add</a> </td>
+					</tr>
+					
+			</form>
+			
+		</table>
+		
+		<div  id="reporte"></div>
+		<a href="javascript:void(0);" title="Volver" onclick="volver('<?php Conectar::ruta() ;?>?accion=opagoslistado')">Volver</a>
+		</center>
+		
+		
+	
+</div>
+
+
+
+<?php
+ require_once("public/layout/footer.php")
+?>
+
+
+
+
+

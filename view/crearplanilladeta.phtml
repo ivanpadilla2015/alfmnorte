@@ -1,0 +1,55 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+
+<div class="container">
+
+		<div class="well">
+			
+			<h3 align="center"> Agregar Detalle a la Planilla</h3>
+    	</div>
+		<div class="span8">	
+			Planilla Numero:<input  type="text" value="<?php echo $_GET["nupla"] ;?>"  readonly size="5" />
+			Fecha Planilla:<input align="center" type="text" value="<?php echo $_GET["fe"] ;?>" readonly size="10" />
+			<table class="tabla">
+					<tr >
+						<th>Banco</th>
+						<th>fecha</th>
+						<th>Valor</th>
+						<th></th>
+					</tr>
+				<form name="form" action="" method="post">
+					<tr >
+						<td>
+                         <select name="banc">
+                         	 <option value="0">Seleccione</option>
+                         	 <?php 
+                         	   foreach($ba as $b)
+							   {							   	
+                         	 ?>
+                         	    <option value="<?php echo $b["id_banco"];?>"><?php echo $b["nombreban"];?></option>
+                         	  <?php
+							   }
+                         	  ?>  
+                         </select>
+                        </td>
+						<td><input type="text" id="datepicker" name="fecha" /></td>
+						<td><input type="text" name="valor" /></td>
+						<td><a  href="javascript:void(0);"  title="agregar detalle" onclick="from_post_detaplan('<?php echo $_GET["nupla"] ;?>',document.form.banc.value,
+							document.form.fecha.value,document.form.valor.value,'reporte','controller/crearplanillagrabadetaController.php')" >Agregar o Ver</a></td>
+					</tr>
+					
+				</form>
+			</table>		
+		
+		     <div  id="reporte"></div>
+		     <center>
+		     <input  type="button" value="Volver" title="Volver " onclick="volver('<?php echo Conectar::ruta() ;?>?accion=home')"/>
+		     </center>
+		     
+	</div>
+</div>  
+<?php
+ require_once("public/layout/footer.php")
+?>

@@ -1,0 +1,53 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Certificado por Proveedor</h2>
+    </div>
+    <form action="" method="post" name="form">  
+    <center>
+    	 Entre
+	    <input  class="fechajquery"   type="text"  name="feini" placeholder="Fecha Inicial…" required/> y
+			        
+		<input  class="fechajquery"   type="text"  name="fefin" placeholder="Fecha Final…" required/> 
+		<label>Proveedor</label>
+		<div class="controls">
+			<select name="banc" >
+				<option value="0">Seleccionar</option>
+				<?php foreach($lprov as $l) 
+				{
+				?>
+					<option value="<?php echo $l["id_proveedor"];?>"><?php echo $l["nombre"]; ?></option>
+				<?php 
+				}
+				?>
+			</select>
+		</div>
+		<br /> 
+		
+    <table>
+    	<tr>
+    		<td>
+    			<input class="btn btn-primary" type="button"  value=" Procesar " title="Procesar" onclick="reten_proveedor(document.form.feini.value,document.form.fefin.value,
+    			document.form.banc.value)" />
+    			
+    		</td>
+    		<td>
+    			<input class="btn btn-primary" type="button"  value=" Crear Documento " title="Procesar" onclick="volver('<?php Conectar::ruta() ;?>?accion=reten_compras_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value+
+    			'&id='+document.form.banc.value+'&tipo='+'C'+'&nom='+'COMPRAS')" />
+    			
+    		</td>
+    		
+    	</tr>
+    </table>
+    </center>
+    </form>
+    <div id="reporte_lib"></div>
+</div>
+
+<?php
+ require_once("public/layout/footer.php")
+?>
+

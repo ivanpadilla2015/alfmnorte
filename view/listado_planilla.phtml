@@ -1,0 +1,42 @@
+<?php
+Conectar::plantilla_menu();
+//numplanilla, fecha, valorplanilla
+?>
+<div class="container">
+
+		<div class="well">
+			
+			<h3 align="center"> Listado de Planillas Creadas</h3>
+    	</div>
+    	<table class="table table-striped">
+		    <thead>
+			    <tr>
+			    <th>Planilla</th>
+			    <th>Fecha</th>
+			    <th>Valor</th>
+			    <th>Editar</th>
+			    </tr>
+		    </thead>
+		    <tbody>
+		    	<?php 
+		    	foreach($tp as $de)
+				{
+				?>	
+				    <tr>
+					    <td><?php echo $de["numplanilla"]; ?></td>
+					    <td><?php echo $de["fecha"]; ?></td>
+					    <td><?php echo $de["valorplanilla"]; ?></td>
+					    <td><a href=" <?php echo Conectar::ruta();?>?accion=crearplanilladeta&nupla=<?php echo $de["numplanilla"];?>&fe=<?php echo $de["fecha"]; ?>">Editar</a> </td>
+					   
+				    </tr>
+				  <?php
+				    }
+				 ?>
+		    </tbody>
+	    </table>
+
+
+ </div>  
+<?php
+ require_once("public/layout/footer.php")
+?>

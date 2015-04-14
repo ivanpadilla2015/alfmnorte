@@ -1,0 +1,58 @@
+<?php
+Conectar::plantilla_menu();
+//numplanilla, fecha, valorplanilla
+?>
+<div class="container">
+
+		<div class="well">
+			
+			<h3 align="center"> Listado de Egresos Creados</h3>
+    	</div>
+    
+    	<table class="table table-striped">
+		    <thead>
+			    <tr>
+			    <th>Id</th>
+			    <th>Egreso</th>
+			    <th>Fecha</th>
+			    <th>Valor</th>
+			    <th>Banco</th>
+			    <th>Detalle</th>
+			    <th>Proveedor</th>
+			    <th>Fecha Junta</th>
+			    <th>Fecha Factura</th>
+			    <th>Fecha Recibido</th>
+			    </tr>
+		    </thead>
+		    <tbody>
+		    	<?php 
+		    	foreach($list as $le)
+				{
+				?>	
+				    <tr>
+				    	<td><?php echo $le["id_egreso"]; ?></td>
+					    <td><?php echo $le["numegreso"]; ?></td>
+					    <td><?php echo $le["fechaegre"]; ?></td>
+					    <td><?php echo number_format($le["valoregre"],2); ?></td>
+					    <td><?php echo $le["nombreban"]." ".$le["cuenta"]; ?></td>
+					    <td><?php echo $le["detallegre"]; ?></td>
+					    <td><?php echo $le["nombre"]; ?></td>
+					    <td><?php echo $le["fejunta"]; ?></td>
+					    <td><?php echo $le["fefactura"]; ?></td>
+					    <td><?php echo $le["ferecibo"]; ?></td>
+					    <td><a href=" <?php echo Conectar::ruta();?>?accion=editar_egreso&nunegr=<?php echo $le["id_egreso"];?>">Editar</a> </td>
+					   
+				    </tr>
+				  <?php
+				    }
+				 ?>
+		    </tbody>
+	    </table>
+	    <div class="pagination">
+			<?php $paginacion->render(); ?>	  
+		</div>
+</div>  
+
+<?php
+ require_once("public/layout/footer.php")
+?>

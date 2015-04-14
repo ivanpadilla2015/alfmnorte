@@ -1,0 +1,56 @@
+<?php
+Conectar::plantilla_menu();
+$vc=$vcus["valorcustodia"];
+$nbol=$cabol["can"];
+$nbol++;
+?>
+		<div class="container">
+			<div class="well">
+    			<h2 align="center">Imprimir Boletin</h2>
+    		</div>
+				 <div class="modal  hide fade " id="myModal" >
+				    <div class="modal-header">
+					    <button  type="button"class="close" title="Cerrar" data-dismiss="modal" aria-hidden="true">×</button>
+					    <h3>Crear Boletin</h3>
+				    </div>
+				    <div class="modal-body">
+				    		    <form class="well" method="post">
+				    		    	<label>Número del Boletin </label>
+				    		    	<input type="text" name="numbol" value="<?php echo $nbol; ?>" class="span1" placeholder="Escriba solo Numero…" required/>
+								    <div class="control-group">
+								       	<label class="control-label" for="select01">Fecha </label>
+								        <div class="controls">
+								        	<input  class="input-small" type="text" id="datepicker"  name="fe" placeholder="Colocar Fecha…" required/> 
+								        </div>
+								    </div>
+								    <label>Custodia -Saldo Anterior </label>
+								    <input type="text" name="salancus"  value="<?php echo number_format($vc,2); ?>" class="span2" placeholder="Escriba solo Numero…" readonly>
+								    <label>Custodia -Ingreso </label>
+								    <input type="text" name="ingrecus" value="0" class="span2" placeholder="Escriba solo Numero…" required/>
+								     <label>Custodia -Egreso </label>
+								     <div class="controls">
+								    	<input type="text" name="egrecus" value="0" class="span2" placeholder="Escriba solo Numero…" required/>
+								    </div>
+								     <label class="checkbox">
+									 		<input type="checkbox" name="grabar" value="1">Grabar
+									 </label>
+									 <input type="checkbox" name="cerrar"  value="1"> Confirmar Cierre de Mes
+									     <div class="alert alert-info">
+									     	¡Atención! Si Confirma Grabar, no podra modificar estos valores. 
+									     </div>
+									<input type="hidden" name="vcvienen" value="<?php echo $vc ?>" /> 
+								    <button type="submit" title="Buscar"  class="btn btn-primary">Procesar</button>
+								</form>
+				     </div>
+				    <div class="modal-footer">
+				    	<a href="#" class="btn" title="Cerrar" data-dismiss="modal" >Cerrar</a>
+				     </div>
+		    </div>	
+			<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-large">Imprimir Boletin</a>
+		</div>
+		
+ <?php
+ require_once("public/layout/footer.php")
+?>
+
+		

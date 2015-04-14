@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<title>Ingreso al Sistema</title>
+	<link rel="stylesheet" media="screen" href="<?php echo Conectar::ruta();?>public/css/styles.css" >
+    
+</head>
+<body>
+<form class="contact_form" action="#" method="post">
+    <ul>
+        <li>
+            <h2>Ingreso al Sistema</h2>
+        </li>
+        <?php
+          if(isset($_GET["m"]))
+		  {
+		  	switch($_GET["m"])
+			{
+				case '1'
+				?>
+				  <h2 style="color: red;">Datos estan vacios</h2>
+					  
+				  </style>
+				<?php
+				break;
+				case '2'
+				?>
+				  <h2 style="color: red;">Datos son incorrectos</h2>
+					  
+				  </style>
+				<?php
+				break;
+			}
+		  }
+        ?>
+        <?php //echo "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']; 
+        	//echo define('BASEURL',dirname(__FILE__).'/');
+         ?>
+        <li>
+            <label for="name">Login:</label>
+            <input type="text" name="login" placeholder="Digite Nombre" required />
+        </li>
+        <li>
+            <label for="email">Pass:</label>
+            <input type="password" name="pass" placeholder="Digite Pass.." required />
+        </li>
+             <input type="hidden" name="grabar" value="si">
+        <li>
+        	<button class="submit" type="submit">Enviar</button>
+        </li>
+    </ul>
+</form>
+
+</body>
+</html>

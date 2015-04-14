@@ -1,0 +1,39 @@
+.tabla
+{
+  /*border:1px solid;*/
+  width:750px;
+  border-collapse:collapse;
+  margin:30px auto;
+  
+  
+}
+.tabla td 
+{
+	/*text-align:center;*/
+	/*border:1px solid;*/
+}
+.tabla th 
+{
+	background-color:#03C;
+	color:#FFF;
+}
+/*/utilizar seudoclase hover*/
+.tabla tr:hover 
+{
+	color:#FFF;
+	background-color:#3CF;
+}
+
+a:link{
+ /* font-family:arial, monospace;*/
+  text-decoration: none;
+  color: teal;
+}
+a:hover{
+  text-decoration: underline;
+}
+
+a:visited{
+  color:black;
+  text-decoration: none;
+}	

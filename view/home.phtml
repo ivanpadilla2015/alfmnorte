@@ -1,0 +1,54 @@
+<?php 
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+		    <div class="well">
+    			<h2 align="center">Relación de Contratos Con Saldos</h2>
+    			 
+    		</div>
+<!--<a href="<?php echo Conectar::ruta();?>?accion=contratos">Agregar Contratos</a>-->
+
+<table class="table table-striped table-bordered table-condensed">
+	<tr >
+		<td  ><h4>Contrato</h4></td>
+		<td><h4>proveedor</h4></td>
+		<td ><h4>Valor Contrato</h4></td>
+		<td><h4>Anticipo</h4></td>
+		<td><h4>Adición</h4></td>
+		<td><h4>Registro Pres</h4></td>
+		<td><h4>Fecha</h4></td>
+		<td><h4>Dependencia</h4></td>
+		<td><h4>Saldo</h4></td>
+		<td><a href="javascript:void(0)">Ver Completo</a> </td>
+		<td><h4>Movimiento</h4> </td>
+	</tr>
+<?php 
+  foreach($datos as $d)
+  {
+  	
+?>
+  	 <tr>
+		<td><?php echo $d["num_contrato"]  ?></td>
+		<td><?php echo $d["nombre"] ?></td>
+		<td>$<?php echo  number_format($d["valorcontrato"],2); ?></td>
+		<td>$<?php echo  number_format($d["valoranticipo"],2); ?></td>
+		<td>$<?php echo  number_format($d["valoradicion"],2); ?></td>
+	    <td><?php echo $d["registro_pres_inic"]; ?></td>
+	    <td><?php echo $d["fechacontrato"] ;?></td>
+	    <td><?php echo $d["nombre_depen"]; ?></td>
+	    <td>$<?php echo  number_format($d["saldo"],2); ?></td>
+	      <td><a href="<?php echo Conectar::ruta();?>?accion=editacontratos&id=<?php echo $d["id_contrato"] ;?>">Editar</a></td>
+	      <td ><h4><a href="<?php echo Conectar::ruta();?>?accion=movimientocontra&id=<?php echo $d["id_contrato"] ;?>"">Ver</a></h4></td>
+	</tr>
+<?php
+  }
+?>
+</table>
+<div class="pagination">
+			<?php $paginacion->render(); ?>	  
+		</div>
+</div> <!-- /container -->
+
+	
+<?php require_once("public/layout/footer.php") ?>

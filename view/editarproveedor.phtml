@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="content-type" content="text/html" />
+	<title>Editar Proveedores</title>
+</head>
+
+<body>
+	<h1>Editar Proveedores</h1>
+	<a href="<?php echo Conectar::ruta();?>?accion=proveedores">Atras</a>
+	<br	 />
+	<hr />
+<form action="" method="post">
+	<?php 
+	if (isset($_GET["m"]))
+	{
+		switch ($_GET["m"])
+		 {
+			case '1':
+				 ?>
+				   <h2 style="color: red">Datos en Blanco</h2>
+				 <?php
+				break;
+			case '2':
+				 ?>
+				   <h2 style="color: green">Datos en Grabados Satisfactoriemente</h2>
+				 <?php
+				break;
+		}	
+	}
+	?>
+	Nit:<input type="text" name="nit" value="<?php echo $dato[0]["nitproveedor"]?>" />
+	Diger:<input type="text"  name="digv"  value="<?php echo $dato[0]["digver"]?>"/><br />
+	Nombre: <input type="text" name="nom" value="<?php echo $dato[0]["nombre"]?>" /><br />
+	Correo: <input type="text" name="correo" value="<?php echo $dato[0]["correo"]?>" /><br />
+	Telefono: <input type="text" name="tel" value="<?php echo $dato[0]["telefono"]?>" /><br />
+	Direccion:<input type="text" name="direcion"  value="<?php echo $dato[0]["direccion"]?>"/><br />
+	Representatnte Legal: <input type="text" name="repreleg"  value="<?php echo $dato[0]["Reprelegal"]?>"/><br />
+	Contacto: <input type="text" name="contacto" value="<?php echo $dato[0]["contacto"]?>" /><br />
+	Cuenta:<input type="text" name="cuenta" value="<?php echo $dato[0]["Cuenta"]?>"/><br />
+	Tipo Persona:<select name=tipoper>
+		<option value="0">Seleccione</option>
+		<?php
+		foreach($datos as $d)
+		{
+			if ( $d["id_tipo_per"]==$dato[0]["id_tipo_per"])
+			{
+				?>
+			<option value="<?php echo $d["id_tipo_per"];?>"  selected="selected"><?php echo $d["nompersona"];?></option>
+		<?php	
+			}else
+				{
+					?>
+			<option value="<?php echo $d["id_tipo_per"];?>" ><?php echo $d["nompersona"];?></option>
+		<?php	
+				}
+		
+		}
+		?>
+	</select><br />
+	Tipo Retencion: <select name=tiporete>
+		<option value="0">Seleccione</option>
+		<?php
+		foreach($dator as $r)
+		{
+			if($r["id_tipo_reten"]==$dato[0]["id_tipo_reten"])
+			{
+				?>
+			<option value="<?php echo $r["id_tipo_reten"];?>"  selected="selected"><?php echo $r["nomreten"];?></option>
+		     <?php	
+			}else
+				{
+					?>
+					<option value="<?php echo $r["id_tipo_reten"];?>" ><?php echo $r["nomreten"];?></option>
+				<?php	
+				}
+		}
+		?>
+	</select><br />
+	<input type="hidden" name="grabar" value="si" />
+	<input type="hidden" name="id" value="<?php echo $_GET["id"];?>" />
+	<input type="submit" value="Editar" />
+	
+</form>
+
+
+</body>
+</html>

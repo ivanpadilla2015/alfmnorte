@@ -1,0 +1,141 @@
+<?php
+Conectar::plantilla_menu();
+//<?php echo $d2["detalle"];/>
+?>
+
+ <div class="container">
+	    <div class="page-header">
+         <center>
+         <h4>Contrato N° :</h4><h2 style="color: red"><?php echo $mov1[0]["num_contrato"]; ?></h2>
+        </center>
+    </div>
+    <!--   Ventana Modal                                      -->
+    <div class="modal  hide fade " id="myModal" >
+				    <div class="modal-header">
+					    <button  type="button"class="close" title="Cerrar" data-dismiss="modal" aria-hidden="true">×</button>
+					    <h3>Detalle </h3>
+				    </div>
+				    <div class="modal-body">
+				    		    <form class="well" method="post" name="form">
+								    <textarea id="detacon" class="span5"></textarea>
+								</form>
+				     </div>
+				    <div class="modal-footer">
+				    	<a href="#" class="btn" title="Cerrar" data-dismiss="modal" >Cerrar</a>
+				     </div>
+	</div>	
+    <strong>Valor Contrato:</strong> $<?php echo number_format($mov1[0]["valorcontrato"],2); ?>&nbsp;&nbsp;
+    <strong>Anticipo:</strong>$<?php echo number_format($mov1[0]["valoranticipo"],2); ?>&nbsp;&nbsp;
+    <strong>Adición:</strong>$<?php echo number_format($mov1[0]["valoradicion"],2); ?>&nbsp;&nbsp;
+    <strong>Saldo :</strong> <span class="badge badge-error">$<?php echo number_format($mov1[0]["saldo"],2); ?></span>
+    <br />
+    <strong>Objeto del Contrato:</strong>
+<pre>
+<?php echo $mov1[0]["objetocontrato"]; ?>
+</pre>
+	  <strong>Registro Presupuestal :</strong> <?php echo $mov1[0]["registro_pres_inic"]; ?>&nbsp;&nbsp;
+	  <strong>Fecha Contrato :</strong> <?php echo $mov1[0]["fechacontrato"]; ?>
+	<br /><br />
+	
+	<div class="row">
+		
+    	<div class="span4">
+    		<h3>Descripción de Adiciones</h3>
+    		 <div class="well">
+    			<?php //print_r($lad); ?>
+				     <table class="table table-striped">
+					    <thead>
+							    <tr>
+								    <th>Adición</th>
+								    <th>Fecha</th>
+								    <th>Valor</th>
+					    		</tr>
+					    </thead>
+					    <tbody>
+						    	
+						    	<?php foreach($lad as $d1)
+								{
+								 ?>
+								 	<tr>
+								    <td><?php echo $d1["id_adicion"]; ?></td>
+								    <td><?php echo $d1["fechaadi"]; ?></td>
+								    <td><?php echo number_format($d1["valoradi"],2); ?></td>
+								   </tr>
+								 <?php 
+								 }
+								 ?>
+						    	</tr>
+					    </tbody>
+					    </table>
+    		</div>
+    	</div>
+    	
+    	<div class="span8">
+    		<h3>Descripción de Pagos</h3>
+    		<div class="well">
+    			<?php //print_r($legr); ?>
+    			  <table class="table table-striped" >
+					    <thead>
+							    <tr>
+								    <th>Opago</th>
+								    <th>F_Opago</th>
+								    <th>Valor</th>
+								    <th>Detalle</th>
+								    <th>Egreso</th>
+								    <th>F_Egreso</th>
+								    <th>Valor Egreso</th>
+					    		</tr>
+					    </thead>
+					    <tbody>
+						    	<?php foreach($legr as $d2)
+								{
+								 ?>
+								 	<tr>
+								    <td ><?php echo $d2["numorden"]; ?></td>
+								    <td ><?php echo $d2["fecha"]; ?></td>
+								    <td ><?php echo number_format($d2["total"],2); ?></td>
+								    <td><a data-toggle="modal" href="#myModal"  class="btn" onclick="llenardetacon('<?php echo $d2["id_opago"]; ?>')" title="Ver Detalles">
+								    	<i class="icon-list-alt"></i> Ver</a>
+								    </td>
+								    <td><?php echo $d2["numegreso"]; ?></td>
+								    <td><?php echo $d2["fechaegre"]; ?></td> 
+								    <td ><?php echo number_format($d2["valoregre"],2); ?></td>
+								  </tr><a href="" 
+								 <?php 
+								 }
+								 ?>
+						    	</tr>
+					    </tbody>
+					    </table>
+    		</div>
+    	</div>
+    	
+    	
+    	
+    </div>
+    
+</div>
+<!--<?php echo $d2["fechaegre"]; ?>
+	<div class="modal hide fade" id="myModal">
+		   <div class="modal-header">
+				    <a class="close" data-dismiss="modal">×</a>
+					    <h3>Detalles de Facturas y altas </h3>
+			</div>
+			 <div class="modal-body">
+						<p><?php echo $d2["detalle"]; ?></p>
+			  </div>
+			 <div class="modal-footer">
+													   
+				<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>
+											   
+			    </div>
+		 </div>-->
+<!--Ejemplo de Windows Open-->
+<!--<input type="button" name="Boton" value="Ver Detalle" 
+onclick="window.open('view/vista.phtml?dt=<?php echo $d2["detalle"];?>', 'Ventana JavaScript', 'width=600, height=400')" />
+<input type="button" name="Boton" value="Ver Detalle" 
+								    	onclick="ver('<?php echo $d2["detalle"]; ?>');" />
+-->
+<?php
+ require_once("public/layout/footer.php")
+?>

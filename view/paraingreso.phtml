@@ -1,0 +1,59 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Listado de Planillas x Ingreso</h2>
+    </div>
+			<table class="table table-striped table-bordered table-condensed">
+					<tr >
+						<th>Planilla</th>
+						<th>fecha</th>
+						<th>Valor</th>
+						<th>Estado</th>
+					
+					</tr>
+					<?php 
+					//numplanilla, fecha, valorplanilla
+					//echo sizeof($lisp);
+					 
+					 foreach($lisp as $l)
+					 {
+					  ?>
+					 <tr >
+						<td align="center" ><?php echo $l["numplanilla"] ;?></td>
+						<td align="center"><?php echo $l["fecha"]; ?></td>
+						<td align="right"><?php echo number_format($l["valorplanilla"],2);?></td>
+						<td align="center">
+							<?php 
+							   $v=$pl->versilegal($l["id_planilla"]);
+							      if ($v<1)
+								   {
+								   	?>
+								   	   <a href="<?php echo Conectar::ruta();?>?accion=crearingreso&idp=<?php echo $l["id_planilla"] ;?>&valo=<?php echo $l["valorplanilla"];?>
+								   	   	                                    &npla=<?php echo $l["numplanilla"];?>">Crear Ingreso</a>
+								   	<?php
+								   }else 
+								   {
+								   	echo "No Legalizada";
+								   }
+							 ?>
+						</td>
+						
+					</tr>
+					 <?php	
+					 }
+					?>
+					
+			
+			</table>		
+		    
+		    <center>
+		     <input type="button" value="Volver" onclick="volver('<?php echo Conectar::ruta();?>?accion=home')" />
+		    </center>
+	</div>
+   
+<?php
+ require_once("public/layout/footer.php")
+?>

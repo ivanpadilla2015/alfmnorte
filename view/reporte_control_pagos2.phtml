@@ -1,0 +1,301 @@
+<?php
+require_once("public/fpdf/fpdf.php");
+class PDF extends FPDF
+{
+			private $ima="";
+		//Cabecera de página
+	function vercabe($ver)
+	{
+		$this->ima=$ver;
+		self::header();
+	}
+	function Header()
+	{
+	    //Logo
+	    //global $ima;
+	    
+		if($this->ima=="si")
+			{ $this->Image('public/img/header_control_pago.jpg',10,10,250,20);
+			 $this->SetFont('Arial','B',11);
+			 $this->SetXY(10,30);
+			 $w=$this->GetStringWidth('CONTROL DE PAGOS')+6;
+			 $this->SetX((279-$w)/2);
+			 $this->Cell($w,5,'CONTROL DE PAGOS');
+			 $this->SetFont('');
+			 $this->Ln();
+			 $this->Ln(3);
+			}
+	   		
+	    }
+
+	//Pie de página
+	function Footer()
+	{
+	    //Posición: a 1,5 cm del final
+	    //$this->SetXY(-15);
+	  $this->SetXY(10,-15);
+	    //Arial italic 8
+	    $this->SetFont('Arial','I',8);
+	    //Número de página
+	    $this->Cell(35,5,'CODIGO: F02-PGN-S05');
+		$ver='VERSION: 02';
+		$w=$this->GetStringWidth($ver);
+		$this->SetX((279-$w)/2);
+	    $this->Cell($w,5,$ver); 
+		$ver2='FECHA DE VIGENCIA: 01/09/2010';
+		$w=$this->GetStringWidth($ver2)+10;
+		$this->SetX((279-$w));
+		$this->Cell($w,5,$ver2); 
+	}
+}
+$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+$fec= $dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y') ;
+$texto=utf8_decode($io[0]["detalle"]);
+$fec=Conectar::FechaTexto($io[0]["fechaobliga"]);
+$fec=utf8_decode($fec);
+$pdf=new PDF('L', 'mm', 'Letter');
+	$pdf->vercabe("si");
+	$pdf->AliasNbPages();
+	$pdf->AddPage();
+	$tex="Objeto del Contrato";
+	//**********************************************************************************
+	$pdf->SetXY(10,35);
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(23,5,'Contrato No:',0,0);
+	$pdf->Cell(30,5,$io[0]["num_contrato"]);
+	$pdf->Cell(100,5,$io[0]["nombre"]);
+	$w=$pdf->GetStringWidth('No Registro Presupuestal :');
+	$w2=$pdf->GetStringWidth($io[0]["registro_pres_inic"]);
+	$wt=$w+$w2;
+	//***************************************registro de adiciones**********************
+	$r=$io[0]["registro_pres_inic"];
+	if(count($rad)>0)
+	 {
+			 foreach($rad as $ad)
+			{
+				$r=$r.",".$ad["registro_New"];
+				
+			}
+		}
+	$pdf->SetX(279-($wt+35));
+	$pdf->Cell($w,5,'No Registro Presupuestal :');
+	$pdf->Cell($w2,5,$r);
+	$pdf->Ln();
+	$cop=utf8_decode('Con cargo al Contrato Interadministrativo N° :'.$io[0]["interadmi"]);
+	$pdf->MultiCell($wt+40,5,$cop,0, 'J');
+	$pdf->SetXY(279-($wt+35),40);
+	$pdf->MultiCell($wt+20,5,'Plazo Ejecucion: '.$io[0]["plazoejecucion"].' O HASTA AGOTAR PRESUPUESTO',0, 'J');
+	//$pdf->Cell(60,5,$io[0]["nombre"]);
+	$pdf->Ln();
+	//******************************************************************************************
+	$pdf->SetXY(10,50);
+	$pdf->rect(10,50,255,55);
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(40,5,$tex,'LTR',0,'C');
+	$pdf->SetFont('');
+	$pdf->Ln();
+	$texto=utf8_decode($io[0]["objetocontrato"]);
+	$pdf->MultiCell(40,5,$texto,'LR', 'J');
+	$pdf->SetXY(50,50);
+	$pdf->SetFont('Arial','B',9);
+	$pdf->Cell(20,55,'Fecha','LTRB',0,'C');
+	$pdf->Cell(28,55,'Vr Contrato','TRB',0,'C');
+	$pdf->MultiCell(28,10,'Valor anticipo acuerdo porcentaje del contrato','T', 'C');
+	$pdf->SetXY(125,50);
+	$pdf->Cell(28,55,'Vr Facturado','LTRB',0,'C');
+	$pdf->MultiCell(28,10,'Saldo por Amortizar del Anticipo','T', 'C');
+	$pdf->SetXY(181,50);
+	$pdf->Cell(28,55,'Vr a Pagar','LTRB',0,'C');
+	$pdf->Cell(28,55,'Saldo x Factura','TRB',0,'C');
+	$pdf->Cell(28,55,'Saldo x Pagar','TRB',0,'C');
+	$pdf->Ln();
+	$pdf->SetXY(10,50);
+	$pdf->Ln();
+	$pdf->Cell(40,5,'Contrato Inicial',1);
+	$pdf->Cell(20,5,$io[0]["fechacontrato"],1);
+	$pdf->Cell(28,5,number_format($io[0]["valorcontrato"],2),1,0,'R');
+	$pdf->Cell(27,5,'',1);
+	$pdf->Cell(28,5,'',1);
+	$pdf->Cell(28,5,'',1);
+	$pdf->Cell(28,5,'',1);
+	$pdf->Cell(28,5,'',1);
+	$pdf->Cell(28,5,'',1);
+	if($io[0]["valoranticipo"]>0)
+	{
+		$pdf->Ln();	
+		$pdf->Cell(40,5,'Pago Anticipado',1);
+		$pdf->Cell(20,5,$io[0]["fecha_anticipo"],1);
+		$pdf->Cell(28,5,'',1);
+		$pdf->Cell(27,5,number_format($io[0]["valoranticipo"],2),1,0,'R');
+		$sxan=$io[0]["valorcontrato"]-$io[0]["valoranticipo"];
+		$pdf->Cell(28,5,'',1);
+		$pdf->Cell(28,5,number_format($sxan,2),1,0,'R');
+		$pdf->Cell(28,5,'',1);
+		$pdf->Cell(28,5,'',1);
+		$pdf->Cell(28,5,'',1);
+	}
+	$pdf->Ln();
+	//**********************************************************
+	$i=0;
+	 if(count($rad)>0)
+	 {
+			 foreach($rad as $ad)
+			{
+				$i++;	
+				$pdf->SetFont('Arial','B',9);
+				$pdf->Cell(40,5,"ADICION ".$i,1);
+				$pdf->SetFont('');
+				$pdf->Cell(20,5,$ad["fechaadi"],1);
+				$pdf->Cell(28,5,number_format($ad["valoradi"],2),1,0,'R');
+				$pdf->Cell(27,5,'',1);
+				$pdf->Cell(28,5,'',1);
+				$pdf->Cell(28,5,'',1);
+				$pdf->Cell(28,5,'',1);
+				$pdf->Cell(28,5,'',1);
+				$pdf->Cell(28,5,'',1);
+				$pdf->Ln();
+			}
+		}
+	 $pdf->SetFont('');
+	 //*******************Todas las Obligaciones del contrato***********************************************
+	  $tobli=$dt->verobliga_conatrato($io[0]["id_contrato"],$io[0]["id_obligacion"]);
+	  if(count($tobli)>0)
+	  { $j=0;
+	  	 foreach($tobli as $ob)
+		 {
+		 	if(is_null($ob["numorden"]))
+			{
+				$va1="Obli No:".$ob["id_obligacion"];
+				$v1="$".number_format($ob["totalobliga"],2);
+				$f1=$ob["fechaobliga"];
+			}else
+				{
+					$va1="Op No:".$ob["numorden"];
+					$v1="$".number_format($ob["totalobliga"],2);
+					$f1=$ob["fecha"];
+				}
+				$j++;	
+		   $pdf->Cell(40,5,"Pago :".$j." - ".$va1,1);
+		   $pdf->Cell(20,5,$f1,1);
+		   $pdf->Cell(28,5,$v1,1);
+		   $pdf->Cell(27,5,'',1);
+		   $pdf->Cell(28,5,'',1,0,'R');
+		   $pdf->Cell(28,5,'',1);
+		   $pdf->Cell(28,5,'',1,0,'R');
+		   $pdf->Cell(28,5,'',1,0,'R');
+		   $pdf->Cell(28,5,'',1);
+		   $pdf->Ln();
+		 }
+	  }
+	 
+	 
+	 //******************************************************************
+	 $vapa=0;$facdo=0;$porfac=0;
+	 foreach($ivo as $row)
+    {
+       //is_numeric
+       if(is_numeric($row["facturas"])) 
+	   {
+	   	$sinu="Factura ".$row["facturas"];
+	   }else
+	   	{
+	   		$sinu=$row["facturas"];
+	   	}
+       $pdf->Cell(40,5,$sinu,1);
+	   $pdf->Cell(20,5,$row["fechadeta"],1);
+	   $pdf->Cell(28,5,'',1);
+	   $pdf->Cell(27,5,'',1);
+	   $pdf->Cell(28,5,number_format($row["valor"],2),1,0,'R');
+	   $pdf->Cell(28,5,'',1);
+	   $pdf->Cell(28,5,number_format($row["val_apagar"],2),1,0,'R');
+	   $pdf->Cell(28,5,number_format($row["porfacturar"],2),1,0,'R');
+	   $pdf->Cell(28,5,'',1);
+	   $facdo=$facdo+$row["valor"];
+	   $vapa=$vapa+$row["val_apagar"];
+	   $porfac=$row["porfacturar"];
+       $pdf->Ln();
+    }
+    $pdf->SetFont('Arial','B',10);
+	////*******************Totales***********************
+	if($io[0]["saldo"]>0)
+	{
+		$sa=$io[0]["saldo"];
+	}else
+		{
+			$sa=0;
+		}
+	   $pdf->Cell(40,5,'Total :',1);
+	   $pdf->Cell(20,5,'',1);
+	   $pdf->Cell(28,5,'',1);
+	   $pdf->Cell(27,5,'',1);
+	   $pdf->Cell(28,5,number_format($facdo,2),1,0,'R');
+	   $pdf->Cell(28,5,'',1);
+	   $pdf->Cell(28,5,number_format($vapa,2),1,0,'R');
+	   $pdf->Cell(28,5,number_format($porfac,2),1,0,'R');//$porfac
+	   $pdf->Cell(28,5,number_format($sa,2),1,0,'R');
+	   $pdf->Ln(5);
+	   //***************************************************************************
+	  	$pos=5;
+		   
+	   //para bajarv loas firmas
+	   for ($i=0;$i<=$pos;$i++) 
+	   {
+		   $pdf->Cell(40,5,'',0);
+		   $pdf->Cell(20,5,'',0);
+		   $pdf->Cell(28,5,'',0);
+		   $pdf->Cell(27,5,'',0);
+		   $pdf->Cell(28,5,'',0);
+		   $pdf->Cell(28,5,'',0);
+		   $pdf->Cell(28,5,'',0);
+		   $pdf->Cell(28,5,'',0);
+		   $pdf->Cell(28,5,'',0);
+		   $pdf->Ln(5);
+	   } 
+	   
+	$pdf->SetFont('');
+	//***********************************************************
+	$f1=strtoupper($_SESSION["ses_nombre"]);
+	$title="CF(RA) JUAN RAMIRO MARRUGO DIAZ";
+	$rev="DAYRO RENDON GIL";
+	//$rev="JOHN BILBAO EBRATT";
+	//$car1="Ejecucion y seguimiento de Contratos";
+	$car2="Coordinador de Ejecucion y seguimiento ";
+	$car2="Coordinador de Contratos ";
+	$tpc1="";
+	$tpc2="";
+	$dr="Director Regional Norte";
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Ln(25);
+	$pdf->Cell(60,0,'','T'); //linea
+	$pdf->Ln();
+	$pdf->Cell(50,5,'Elaboro :'.$f1);
+	$w1=$pdf->GetStringWidth($title)+6;
+    $pdf->SetX((279-$w1)/2);
+	$pdf->Cell($w1,0,'','T'); //linea
+	$pdf->Ln();
+	$pdf->SetX((279-$w1)/2);
+	$pdf->Cell($w1,5,$title);
+	$pdf->SetX((279-80));
+	$w=$pdf->GetStringWidth($rev);
+	$pdf->Cell($w+19,0,'','T'); //linea
+	$pdf->Ln();
+	$pdf->SetX((279-80));
+	$pdf->Cell($w,5,'Reviso :'.$rev);
+	$pdf->Ln();
+	$pdf->SetFont('Arial','',10);
+	$w=$pdf->GetStringWidth($car1);
+	$pdf->Cell($w,3,$car1);
+	$w=$pdf->GetStringWidth($dr)+6;
+	$pdf->SetX((279-$w)/2);
+	$pdf->Cell($w,3,$dr);
+	$pdf->SetX((279-80));
+	$w=$pdf->GetStringWidth($car2);
+	$pdf->Cell($w,3,$car2);
+	$pdf->Ln();
+	$w=$pdf->GetStringWidth($tpc1);
+	$pdf->Cell($w,5,$tpc1);
+	$pdf->SetX((279-80));
+	$pdf->Cell($w,5,$tpc2);
+	$pdf->Output();
+?>

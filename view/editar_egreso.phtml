@@ -1,0 +1,90 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Editar Egreso</h2>
+    </div>
+       
+  <form action="" method="post" name="form" class="well">  
+    <label>Egreso</label>
+	    <div class="controls">
+	    	<input type="text" class="span1" name="negreso" value="<?php echo $eid["numegreso"]; ?>"   placeholder="Escribe Solo Numeros…" readonly/>
+	    </div>
+	  <label>Proveedor</label>
+	    <div class="controls">
+	    	<input type="text" class="span3" name="nomprov" value="<?php echo $eid["nombre"]; ?>"   placeholder="Escribe Solo Numeros…" readonly/>
+	    </div>
+	     
+	    <label>Fecha Egreso</label>
+	    <div class="controls">
+	    	<input type="text" class="fechajquery" name="fecha" value="<?php echo $eid["fechaegre"]; ?>" placeholder="Escribe fecha" required>
+	    </div>
+	    
+	    <label>Detalle</label>
+	     <div class="controls">
+	     	  <textarea class="span4" rows="5" name="detaegr"><?php echo $eid["detallegre"];  ?></textarea>
+	     </div>
+	    <label>Banco</label>
+	    <div class="controls">
+	       <select name="numban" class="span3">
+		    	<option value="0">Seleccione</option>
+				<?php
+				foreach($ban1 as $b)
+				{
+					if($b["id_banco"]==$eid["id_banco"])
+					{
+						?>
+					<option value="<?php echo $b["id_banco"];?>"  selected="selected"><?php echo $b["nombreban"]." ".$b["cuenta"];?></option>
+				     <?php	
+					}else
+						{
+							?>
+							<option value="<?php echo $b["id_banco"];?>" ><?php echo $b["nombreban"]." ".$b["cuenta"];?></option>
+						<?php	
+						}
+				}?>
+			</select>
+	    </div>
+	    <label>Valor Egreso</label>
+	    <div class="controls">
+	    	<input type="text" class="span2" name="vegre" value="<?php echo $eid["valoregre"]; ?>"   placeholder="Escribe Solo Numeros…" required/>
+	    </div>
+	   <label>Fecha Junta</label>
+	    <div class="controls">
+	    	<input type="text" class="fechajquery" name="fechaj" value="<?php echo $eid["fejunta"]; ?>" placeholder="Escribe fecha" required/>
+	    </div>
+	    <label>Fecha Factura</label>
+	    <div class="controls">
+	    	<input type="text" class="fechajquery" name="fechaf" value="<?php echo $eid["fefactura"]; ?>" placeholder="Escribe fecha" required/>
+	    </div>
+	    <label>Fecha Recibido</label>
+	    <div class="controls">
+	    	<input type="text" class="fechajquery" name="fechar" value="<?php echo $eid["ferecibo"]; ?>" placeholder="Escribe fecha" required/>
+	    </div>
+	    <label>Número Cheque</label>
+	    <div class="controls">
+	    	<input type="text" class="span2" name="ncheque" value="<?php echo $eid["numcheque"]; ?>"   placeholder="Escribe Solo Numeros…"/>
+	    </div>
+	     <label>Cheque a Nombre</label>
+	    <div class="controls">
+	    	<input type="text" class="span2" name="nomcheque" value="<?php echo $eid["chequenom"]; ?>"   placeholder="Escribe Nombre…"/>
+	    </div>
+	    <label>Fecha Cheque</label>
+	    <div class="controls">
+	    	<input type="text" class="fechajquery" name="fecheq" value="<?php echo $eid["fecheque"]; ?>" placeholder="Escribe fecha"/>
+	    </div>
+	     <input type="hidden" name="editar" value="si" />
+	     <input type="hidden" name="id_egr" value="<?php echo $eid["id_egreso"];?>" />
+	     <button type="submit" class=" btn btn-primary" title="Modificar Egreso">Grabar</button>
+	     <a class="btn" href="<?php echo Conectar::ruta();?>?accion=listado_egresos">Cancelar</a>
+	     
+   </form> 
+    
+    
+</div>
+
+<?php
+ require_once("public/layout/footer.php")
+?>

@@ -1,0 +1,53 @@
+<?php
+
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Documentos Pendientes Por O. pagos</h2>
+    </div>
+	<table class="table table-striped">
+	    <thead>
+	    <tr>
+		    <th>Obligación </th>
+		    <th>Contrato</th>
+		    <th>Proveedor</th>
+		    <th>Fecha</th>
+		    <th>Valor</th>
+		    <td>Pagar</td>
+	    </tr>
+	    </thead>
+    <tbody>
+    	<?php
+					foreach($dob as $ob)
+					{
+					?>	
+					<tr>
+						<td align="center"><?php echo $ob["id_obligacion"] ; ?></td>
+						<td><?php echo $ob["num_contrato"] ; ?></td>
+						<td><?php echo $ob["nombre"] ; ?></td>
+						<td><?php echo $ob["fechaobliga"] ; ?></td>
+						<td align="right"><?php echo number_format($ob["totalobliga"],"0","","." ); ?></td>
+						<td><a href="<?php echo Conectar::ruta();?>?accion=opagosadd&ob=<?php echo $ob["id_obligacion"] ;?>&cto=<?php echo $ob["num_contrato"] ; ?>&idp=<?php echo $ob["id_proveedor"] ; ?>
+							&va=<?php echo$ob["totalobliga"]; ?>&id_con=<?php echo $ob["id_contrato"] ; ?>">Pagar</a></td>
+					</tr>
+					<?php
+					}
+					?>
+    	
+    </tbody>
+    </table>
+
+	
+</div>
+
+
+
+<?php
+ require_once("public/layout/footer.php")
+?>
+
+
+
+

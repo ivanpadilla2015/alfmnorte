@@ -1,0 +1,129 @@
+<?php 
+//print_r($o);
+?>
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	
+		<title>Detalle del Control de la Obligacion</title>
+<!--  centrar tablas style="margin: 0 auto;" --> 
+<link rel="stylesheet" href="<?php echo Conectar::ruta();?>public/css/jquery-ui.css" />
+   <script src="<?php echo Conectar::ruta();?>public/js/jquery-1.8.3.js"></script>
+   <script src="<?php echo Conectar::ruta();?>public/js/jquery-ui.js"></script>
+   <link rel="stylesheet" href="<?php echo Conectar::ruta();?>public/css/demos.css" />
+<script  language="JavaScript" type="text/javascript">
+	 function ejecu()
+	 {
+	 	 document.form.submit();
+	 }
+	 $(function() {
+	$( "#datepicker" ).datepicker({ altFormat: "yy-mm-dd" });
+	});
+	 
+</script>
+<style type="text/css">
+  body{
+  	margin: 20px;
+  }
+  
+	form{
+		width:620px;
+		background-color: #035292;
+		color:#FBF9EE;
+		border-radius: 10px;
+	}
+	
+</style>
+</head>
+
+<body>
+
+<h1 > Detalles del Control de la Obligación</h1>	
+<table width="500">
+	<tr>
+		<td> <strong>Obligacion N°</strong> </td><td><?php echo $o[0]["id_obligacion"];?> </td>
+	</tr>
+	<tr>
+		<td><strong>Contrato N°</strong></td><td><?php echo $o[0]["num_contrato"];?></td>
+	</tr>
+	<tr>
+		<td><strong>Pproveedor </strong></td><td><?php echo $o[0]["nombre"];?></td>
+	</tr>
+	<tr>
+		<td><strong>Fecha Control Obligacion<strong></td><td><?php echo $o[0]["fechaobliga"];?></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><strong>CONCEPTO </strong></td>
+	</tr>
+	<tr>
+		<td align="justify" colspan="2" align="center"><?php echo $o[0]["detalle"];?></td>
+	</tr>
+</table> 
+<hr />
+<hr />
+<a href="<?php echo Conectar::ruta();?>?accion=controlobligacion">Volver Pagina Anterior</a>
+ &nbsp;&nbsp;&nbsp;Saldo de Contrato:$<?php echo number_format($o[0]["saldo"],"0","",".");?>
+<form  name="form" action="" method="post">
+	 <h3 align="center"> Detalles del Control Obligación</h3>
+ <table>
+ 	<tr>
+ 		<td>Fecha</td>
+ 		<td>Altas</td>
+ 		<td>Facturas</td>
+ 		<td>Valor</td>
+ 	</tr>
+ 	<tr>
+ 		<td ><input type="text" id="datepicker" name="fecha" /></td>
+ 		<td><input type="text" name="alta" autofocus/></td>
+ 		<td><input type="text" name="factura" /></td>
+ 		<td><input type="text" name="valor" /></td>
+ 	</tr>
+ 	<input type="hidden" value="si" name="agregar" />
+ 	<input type="hidden"  name="id_obli" value="<?php echo $o[0]["id_obligacion"];?>"/>
+ 	<input type="hidden"  name="sal" value="<?php echo $o[0]["saldo"];?>"/>
+ 	 	<input type="hidden"  name="id_contra" value="<?php echo $o[0]["id_contrato"];?>"/>
+ 	<input type="button" value="Agregar Detalle" title="Agregar detalle" onclick="ejecu()"/>
+ </table>	
+</form>
+
+<hr />
+<hr />
+<?php 
+//print_r($vo);
+//echo sizeof($vo);
+
+?>
+
+<table  width="400" >
+	<tr style="background-color: #E0ECFF;">
+		<td>Fecha</td>
+		<td>Altas</td>
+		<td>Facturas</td>
+		<td>Valor</td>
+		<td>Eliminar</td>
+	</tr>
+	<?php
+	$s=0;
+	 foreach($vo as $d)
+	 {
+	 	$s=$s+$d["valor"];
+	 ?>
+	 <tr>
+		<td  width="100"><?php echo $d["fechadeta"];?></td>
+		<td align="center" width="100"><?php echo $d["altas"];?></td>
+		<td width="100"><?php echo $d["facturas"];?></td>
+		<td align="right" width="100"><?php echo number_format($d["valor"],"0","",".");?></td>
+	</tr>
+	
+   <?php
+     
+	 }
+  ?>
+  <tr>
+		<td align="right" colspan="4"> <strong>Total </strong> $<?php echo number_format($s,"0","",".");?></td>
+	</tr>
+  </table>
+  
+</body>
+</html>

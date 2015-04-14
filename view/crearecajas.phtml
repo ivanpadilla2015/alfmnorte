@@ -1,0 +1,129 @@
+<?php
+Conectar::plantilla_menu();
+$nr=$nrec["can"];
+$nr++;
+?>
+<div class="container">
+
+		<div class="well">
+			<h3 align="center">Crear Recajas</h3>
+    	</div>
+       <form class="well" method="post" name="form" >
+	    <label>Número Recaja</label>
+	    <div class="controls">
+	    	<input type="text" class="span1" name="numrec" value="<?php echo $nr;?>" onblur="buscarrecaja(this.value)"  placeholder="Escribe Solo Numeros…" required>
+	    	<span style="color: red" id="mensaje"></span>
+	    </div>
+	    <label>Fecha</label>
+	     <div class="controls">
+	         	<input  class="input-small" type="text" id="datepicker"  name="ferec" placeholder="Colocar Fecha…" required/> 
+	     </div>
+	     <label>Banco</label>
+	    <div class="controls">
+	    	<select name="ban">
+                 <option value="0">Seleccione</option>
+                  <?php 
+                   	   foreach($bans as $b)
+					   {							   	
+                 ?>
+                  		   <option value="<?php echo $b["id_banco"];?>"><?php echo $b["nombreban"];?></option>
+                 <?php
+						}
+                 ?>  
+           </select>
+	     </div>
+	     <label>Cliente</label>
+	    <div class="controls">
+	    	<select name="clien">
+                 <option value="0">Seleccione</option>
+                  <?php 
+                   	   foreach($acli as $c)
+					   {							   	
+                 ?>
+                  		   <option value="<?php echo $c["id_cliente"];?>"><?php echo $c["nombrecli"];?></option>
+                 <?php
+						}
+                 ?>  
+           </select>
+	     </div>
+	  <div class="row">
+	   <div class="span11">
+	   	 
+	     <table class="table table-bordered" id="mitabla">
+		    <thead>
+			    <tr>
+			    <th>CUENTA NUMERO</th>
+			    <th>CONCEPTO</th>
+			    <th>CHEQUE NUMERO</th>
+			    <th>BANCO</th>
+			    <th>VALOR</th>
+			    </tr>
+		    </thead>
+		    <tbody>
+			    <tr>
+			    <td><input type="text" name="cuen[]" class="span2"/></td>	
+			    <td><input type="text" name="conc[]" class="span3"/></td>
+			    <td><input type="text" name="ncheque[]" class="span2"/></td>
+			    <td><input type="text" name="banc[]" class="span2"/></td>
+			    <td><input type="text" name="valo[]" class="unitario" onblur="calcular_total()" /></td>
+			    </tr>
+		    </tbody>
+		 </table>
+		 		<!--<button id="add">Añadir Fila</button>-->
+		 		<div class="breadcrumb">
+		 			<center><input type="button" class="btn" id="add" value="Agregar" title="Agregar Registo" /></center>
+		 		</div>
+		 		    <div class="alert alert-info" align="right">
+				    	<label for="total">Total: <input type="text" name="vrec" id="total" value="0"/>
+				    </div>
+		 		
+			
+    		</div>	
+ 		 </div>
+
+		<div class="row">
+			   <div class="span11">
+			   	 <div class="well">
+			     <table class="table table-bordered" id="mitabla2">
+				    <thead>
+					    <tr>
+						    <th>INPUTACION CONTABLE</th>
+						    <th>valor</th>
+						    
+					    </tr>
+				    </thead>
+				    <tbody>
+					    <tr>
+						    <td>
+						    	<select name="idpuc">
+					                 <option value="0">Seleccione</option>
+					                  <?php 
+					                   	   foreach($pu as $p)
+										   {							   	
+					                 ?>
+					                  		   <option value="<?php echo $p["id_puc"];?>"><?php echo $p["nombrepuc"];?></option>
+					                 <?php
+											}
+					                 ?>  
+					           </select>
+						    </td>	
+						    <td><input type="text" name="valoaux" class="span2"/></td>
+						    
+					    </tr>
+				    </tbody>
+				 </table>
+				 				 
+				</div> 
+		    </div>	
+		 </div>
+		
+		 <input type="hidden" name="ciud" value="Malambo" />
+	     <input type="hidden" name="grabar" value="si" />
+	     <button type="submit" class=" btn btn-primary" title="Grabar recaja">Grabar</button>
+	    
+      </form>
+     
+</div>
+<?php
+ require_once("public/layout/footer.php")
+?>

@@ -1,0 +1,125 @@
+<?php
+require_once("public/fpdf/fpdf.php");
+class PDF extends FPDF
+{
+		
+		//Cabecera de página
+	
+	function Header()
+	{
+	    { $this->Image('public/img/logo.jpg',10,10,25,20);
+			 $this->SetFont('Arial','',9);$this->Ln(3);
+			 $this->Cell(30,5,'',0,0);
+			 $this->Cell(23,5,'AGENCIA LOGISTICA DE ',0,0);$this->Ln();
+			 $this->Cell(30,5,'',0,0);
+			 $this->Cell(23,5,'LAS FUERZAS MILITARES ',0,0);$this->Ln();
+			 $this->Cell(30,5,'',0,0);
+			 $this->Cell(23,5,'NIT. 899.999.162-4',0,0);
+			 
+			 
+		}
+	   		
+	    }
+
+	//Pie de página
+	function Footer()
+	{
+	    //Posición: a 1,5 cm del final
+	    //$this->SetXY(-15);
+	  $this->SetXY(10,-15);
+	    //Arial italic 8
+	    $this->SetFont('Arial','I',8);
+	    //Número de página
+	    $this->Cell(35,5,'CODIGO: F01-PGF-S02');
+		$ver='VERSION: 01';
+		$w=$this->GetStringWidth($ver);
+		$this->SetX((279-$w)/2);
+	    $this->Cell($w,5,$ver); 
+		$ver2='FECHA DE VIGENCIA: 01/04/2009';
+		$w=$this->GetStringWidth($ver2)+10;
+		$this->SetX((279-$w));
+		$this->Cell($w,5,$ver2); 
+	}
+}
+$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+$fec= $dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y') ;
+$dia=date('d',strtotime($rcn["fecha"]));
+$mes=date('n',strtotime($rcn["fecha"])-1);
+$anos=date('Y',strtotime($rcn["fecha"])); 
+$numl=utf8_decode(Conectar::NumeroLetras($rcn["valorec"]));
+//$fec=utf8_decode($fec);
+$pdf=new PDF('L', 'mm', 'Letter');
+	$pdf->AliasNbPages();
+	$pdf->AddPage();
+	$pdf->Ln();
+	$pdf->Cell(90,5,'',0,0);
+	$pdf->Cell(30,5,'CIUDAD',1,0,'C');
+	$pdf->Cell(20,5,'DIA',1,0,'C');
+	$pdf->Cell(20,5,'MES',1,0,'C');
+	$ano=utf8_decode('AÑO');
+	$pdf->Cell(20,5,$ano,1,0,'C');
+	$pdf->Cell(30,5,'RECIBO DE',0,0,'C');
+	$pdf->Ln();
+	$pdf->Cell(90,7,"",0,0);
+	$pdf->Cell(30,7,$rcn["ciudad"],1,0,'C');
+	$pdf->Cell(20,7,$dia,1,0,'C');
+	$pdf->Cell(20,7,$mes,1,0,'C');
+	$pdf->Cell(20,7,$anos,1,0,'C');
+	$pdf->Cell(30,5,'CAJA   ',0,0,'C');
+	$pdf->Cell(30,5,'No ___'.$rcn["numrecaja"]."___",0,0,'C');
+	$pdf->rect(10,42,255,7);
+	$pdf->Ln(10);
+	$pdf->SetFont('Arial','B',9);
+	$pdf->Cell(35,5,'RECIBI DE NIT O C.C',0,0);
+	$pdf->SetFont('Arial','',9);
+	$pdf->Cell(30,5,$rcn["identifica"],0,0);
+	$pdf->Cell(23,5,$rcn["nombrecli"],0,0);
+	$pdf->Ln(10);
+	$pdf->rect(10,52,255,9);
+	$pdf->SetFont('Arial','B',9);
+	$pdf->Cell(23,5,'LA SUMA DE:',0,0);
+	$pdf->SetFont('Arial','',10);
+	$pdf->Cell(30,5,$numl,0,0);
+	$pdf->Ln(12);
+	$pdf->SetFont('Arial','B',9);
+	$pdf->Cell(30,7,'CUENTA NUMERO',1,0);
+	$pdf->Cell(125,7,'CONCEPTO',1,0,'C');
+	$pdf->Cell(30,7,'CHEQUE NUMERO',1,0,'C');
+	$pdf->Cell(30,7,'BANCO',1,0,'C');
+	$pdf->Cell(40,7,'VALOR',1,0,'C');$pdf->Ln();
+	$pdf->SetFont('Arial','',9);
+	foreach($det1 as $d)
+	{
+		$pdf->Cell(30,5,$d["cuenta"],1,0);
+		$pdf->Cell(125,5,$d["concepto"],1,0);
+		$pdf->Cell(30,5,$d["chequenum"],1,0,'C');
+		$pdf->Cell(30,5,$d["banco"],1,0,'C');
+		$pdf->Cell(40,5,number_format($d["valorporc"],2),1,0,'R');
+		$pdf->Ln();
+	}
+	$pdf->Cell(185,5,"",0,0);
+	$pdf->Cell(30,5,"Total $",1,0,'C');
+	$pdf->Cell(40,5,number_format($rcn["valorec"],2),1,0,'R');$pdf->Ln();
+	
+	$pdf->Ln(4);
+	$pdf->SetFont('Arial','B',9);
+	$pdf->Cell(155,7,"I M P U T A C I O N   C O N T A B L E",1,0,'C');
+	$pdf->Cell(60,7,"AUXILIAR",1,0,'C');
+	$pdf->Cell(40,7,"VALOR",1,0,'C');$pdf->Ln(3);	
+	$pdf->Ln();
+	$pdf->SetFont('Arial','',9);
+	foreach($det2 as $d2)
+	{
+		$pdf->Cell(155,5,$d2["nombrepuc"],1,0,'C');
+		$pdf->Cell(60,5,$d2["numero"],1,0,'C');
+		$pdf->Cell(40,5,number_format($d2["valoraux"],2),1,0,'R');
+		$pdf->Ln();
+	}
+	$pdf->Ln(2);
+	$pdf->SetFont('Arial','B',9);
+	$pdf->Cell(185,10,"C A J E R O",1,0,'C');
+	$pdf->Cell(70,10,"",1,0,'C');
+	
+$pdf->Output();
+?>

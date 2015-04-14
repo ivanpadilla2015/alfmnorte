@@ -1,0 +1,96 @@
+<?php
+require_once("public/fpdf/fpdf.php");
+class PDF extends FPDF
+{
+		private $valo;
+		private $valo2;
+		//Cabecera de página
+	function vervalo($fe,$fe2)
+	{
+		$this->valo=Conectar::FechaTexto2($fe);
+		$this->valo2=Conectar::FechaTexto2($fe2);
+	}
+	//Cabecera de página
+	
+	function Header()
+	{
+	    { $this->Image('public/img/header_orden_pago.jpg',10,10,195,25);
+			 $this->Ln(20);
+			 $this->SetFont('Arial','B',9);
+			 $texto='RETENCIONES REALIZADAS ENTRE '.$this->valo."  y  ".$this->valo2;
+			 $w=$this->GetStringWidth($texto)+6;
+			 $this->SetX((279-$w)/2);
+			 $this->Cell($w,5,$texto);$this->Ln();$this->Ln();
+			 $this->SetFont('Arial','B',9);
+			 $this->Cell(20,5,"FECHA",1,0,'C'); 
+			 $this->Cell(20,5,"OPAGO",1,0,'C');
+			 $this->Cell(20,5,"EGRESO",1,0,'C');
+			 $this->Cell(45,5,"PROVEEDOR",1,0,'C');
+			 $this->Cell(30,5,"IDENTIFICACION",1,0,'C');
+			 $this->Cell(45,5,"BANCO",1,0,'C');
+			 $this->Cell(20,5,"% RETEN",1,0,'C');
+			 $this->Cell(30,5,"BASE",1,0,'C');
+			 $this->Cell(30,5,"RETENCION",1,0,'C');
+			 $this->SetFont('');
+			 $this->Ln();
+			 
+			 
+		}
+	   		
+	    }
+
+	//Pie de página
+	function Footer()
+	{
+	    //Posición: a 1,5 cm del final
+	    //$this->SetXY(-15);
+	    
+	  $this->SetXY(10,-15);
+	  	//$this->Cell(170,5,'PASAN',1,0,'R');
+		//$this->Cell(25,5,number_format($this->valo,2),1,0,'R');$this->Ln();
+	    //Arial italic 8
+	     $this->SetFont('Arial','I',8);
+		 //Número de página
+		 $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+		
+	}
+}
+
+$pdf=new PDF('L', 'mm', 'Letter');
+	$pdf->AliasNbPages();
+	$pdf->vervalo($_GET["fe1"], $_GET["fe2"]);
+	$pdf->AddPage();
+	$tbase=0;
+	$trete=0;
+	foreach($nrete as $p)
+	{
+		$pdf->Cell(20,5,$p["fechaegre"],1,0,'C'); 
+		$pdf->Cell(20,5,$p["numorden"],'LBR',0,'C');
+		$pdf->Cell(20,5,$p["numegreso"],'LBR',0,'C');
+		$pdf->Cell(45,5,substr($p["nombre"],0,20),1,0,'L');
+		$pdf->Cell(30,5,$p["nitproveedor"],1,0,'R');
+		$pdf->Cell(45,5,substr($p["nombreban"],0,10)." ".$p["cuenta"],1,0,'R');
+		$pdf->Cell(20,5,$p["porcentaje"],1,0,'C');
+		$pdf->Cell(30,5,number_format($p["base"],2),1,0,'R');
+		$pdf->Cell(30,5,number_format($p["totalreten"],2),1,0,'R');
+		$tbase +=$p["base"];
+		$trete +=$p["totalreten"];
+		$pdf->Ln();
+		
+	}
+	$p1=round($trete/1000,0);
+	$p2=round($p1*1000,0);
+	$a1=$trete/1000;
+	$a2=$a1-intval($a1);
+	$a3=$a2*1000;
+	$af=intval(1000-$a3);
+	$pdf->Cell(230,5,"TOTAL BASE",0,0,'R'); 
+	$pdf->Cell(30,5,number_format($tbase,2),0,0,'R'); $pdf->Ln();
+	$pdf->Cell(230,5,"TOTAL RETENCION ",0,0,'R'); 
+	$pdf->Cell(30,5,number_format($trete,2),0,0,'R'); $pdf->Ln();
+	$pdf->Cell(230,5,"APROXIMACION MULTIPLO DE 1000",0,0,'R'); 
+	$pdf->Cell(30,5,number_format($af,2),0,0,'R'); $pdf->Ln();
+	$pdf->Cell(230,5,"TOTAL",0,0,'R'); 
+	$pdf->Cell(30,5,number_format($p2,2),0,0,'R'); $pdf->Ln();
+$pdf->Output();
+?>

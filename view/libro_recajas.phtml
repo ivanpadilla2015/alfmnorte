@@ -1,0 +1,23 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Libro Diario de Caja</h2>
+    </div>
+  <form action="" method="post" name="form">  
+   <center>
+	    Entre
+	    <input  class="fechajquery"   type="text"  name="feini" placeholder="Fecha Inicial…" required/> y
+		<input  class="fechajquery"   type="text"  name="fefin" placeholder="Fecha Final…" required/>
+		<input class="btn btn-primary" type="button" " value=" Procesar " title="Procesar" onclick="repor_recajas(document.form.feini.value,document.form.fefin.value)" />
+	 </center>    
+   </form> 
+    <a href="javascript:void(0);" title="Pasar a Pdf" onclick="volver('<?php Conectar::ruta() ;?>?accion=libro_recajas_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value)">Pdf</a>
+    <div id="reporte_lib"></div>
+</div>
+
+<?php
+ require_once("public/layout/footer.php")
+?>

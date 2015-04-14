@@ -1,0 +1,53 @@
+<?php
+Conectar::plantilla_menu();
+?>
+  	<div class="container">
+    		<div class="well">
+    			<h2 align="center">Listado Orden(s) de Pago</h2>
+    		</div>
+			    	<a href="<?php Conectar::ruta() ;?>?accion=home">Volver</a>
+			    	<table class="table table-striped table-bordered table-condensed">
+							<tr >
+								<td>Id</td>
+								<td>Opago</td>
+								<td>Proveedor</td>
+								<td>Fecha</td>
+								<td>Valor</td>
+								<td>Detalle</td>
+								<td>Contrato Id</td>
+								<td>Editar</td>
+							</tr>
+							<?php 
+							   foreach($opl as $deo)
+							   {
+							?>
+							<tr>
+								<td><?php echo $deo["id_opago"];?></td>
+								<td><?php echo $deo["numorden"];?></td>
+								<td><?php echo $deo["nombre"];?></td>
+								<td><?php echo $deo["fecha"];?></td>
+								<td><?php echo number_format($deo["total"],2);?> </td>
+								<td><?php echo $deo["detalle"];?></td>
+								<td><?php echo $deo["id_contrato"];?></td>
+								<td><?php if($deo["id_contrato"]=="Sin_Cont"){ ?>
+									  Editar
+									<?php }else { ?>
+										<a href="<?php echo Conectar::ruta();?>?accion=opagosdeta&idop=<?php echo $deo["id_opago"];?>">Editar</a>
+									<?php } ?>
+									</td>
+							</tr>
+							<?php
+							}
+						    ?>
+						</table>
+						<div class="pagination">
+							<?php $paginacion->render(); ?>	  
+						</div>
+	</div
+ <?php
+	 require_once("public/layout/footer.php")
+?>
+			
+
+    
+

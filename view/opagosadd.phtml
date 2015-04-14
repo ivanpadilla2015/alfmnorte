@@ -1,0 +1,92 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Documento  a Pagar N° <?php echo $_GET["ob"] ;?></h2>
+    </div>
+    <?php
+				if(isset($_GET["m"]))
+				{
+					switch($_GET["m"])
+					{
+						       case '2' :
+								   ?>
+								        <h2 style="color: green">Datos Grabados Satisfactoriemente</h2>
+								   <?php
+					}
+				}
+					
+	?>
+	<form name="form" action="" method="post" class="form-horizontal">
+		
+			<div class="control-group">
+	            	<label class="control-label" for="select01">Numero Opago</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="numo" autofocus  autocomplete="off" placeholder="Colocar Num Opago…" required/> 
+	           		</div>
+	          </div>
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Proveedor</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="prove" value="<?php echo $busp["nombre"];?>" readonly/> 
+	           		</div>
+	          </div>
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Contrato</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="text"   name="cont" value="<?php echo $_GET["cto"];?>" readonly/> 
+	           		</div>
+	          </div>
+	         <div class="control-group">
+	            	<label class="control-label" for="select01">Fecha Opago</label>
+	           		 <div class="controls">
+	           				<input  class="input-small" type="text" id="datepicker"  name="fe" placeholder="Colocar Fecha…" required/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Sub Total</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="number"   name="valorsiva"   placeholder="Colocar Valor antes de iva" required/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Iva</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="number"   name="valoriva"   placeholder="Colocar Valor de iva" required/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+	            	<label class="control-label" for="select01">Total Sin Los Descuentos</label>
+	           		 <div class="controls">
+	           				<input  class="input" type="number"   name="valorsdes"  value="<?php echo  $_GET["va"];?>"  readonly/> 
+	           		</div>
+	          </div>
+	          <div class="control-group">
+					<label class="control-label" for="textarea">Detalle</label>
+					<div class="controls">
+						<textarea  class="input-xlarge" name="deta" rows="3" cols="40"><?php echo "Contrato N°".$_GET["cto"]." ".$bto;?></textarea>
+					</div>
+			</div>
+	          
+	          
+	          <input type="hidden"  name="grabar"  value="si"/>
+			 <input type="hidden"  name="contrato"  value="<?php echo $_GET["id_con"];?>"/>
+			 <input type="hidden"  name="obli"  value="<?php  echo $_GET["ob"];?>"/>
+			 <input type="hidden" name="idp" value="<?php echo $busp["id_proveedor"];?>" />
+	          <div class="form-actions">
+	            <button type="submit" class="btn btn-primary">Agregar Detalle</button>
+	            <input class="btn" type="button" " value=" Volver " onclick="volver('<?php Conectar::ruta() ;?>?accion=ordenpagocrear')"/>
+          	  </div>
+          	
+    </form>
+	
+</div>
+
+
+
+<?php
+ require_once("public/layout/footer.php")
+?>
+

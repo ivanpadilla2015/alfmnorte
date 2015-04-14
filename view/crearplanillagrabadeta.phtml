@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <title>Crar Planillas</title>
+        <meta charset="utf-8">
+  <!--      <link href="<?php echo Conectar::ruta();?>public/css/bootstrap.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="<?php echo Conectar::ruta();?>public/css/jquery-ui.css" />
+    <link rel="stylesheet" href="<?php echo Conectar::ruta();?>public/css/demos.css" />
+     
+ </head>
+
+    <body>
+ <div class="container">
+    <div class="span8">
+		<table class="table table-striped">
+			<?php 
+			foreach($vp as $p)
+			{
+			?>
+			<tr>
+				<td><?php echo $p["nombreban"];?></td>
+				<td><?php echo $p["fechadeta"];?></td>
+				<td align="right">$<?php echo number_format($p["valordeta"],2);?></td>
+				<td align="right"><a href="javascript:void(0)" title="Eliminar Detalle" onclick="eliminarp('<?php echo $p["id_detaplanilla"] ;?>',
+					'<?php echo $p["id_planilla"] ;?>','<?php echo $p["valordeta"] ;?>','reporte','controller/elim_deta_plaController.php')">Eliminar</a></td>
+			</tr>
+			
+			<?php
+			} 
+			?>
+			<tr >
+				<td colspan="2" align="right" <font></font>Total :</td>
+				<td align="right">$<FONT COLOR="0000FF"><?php echo number_format($tot["total"],2);?></FONT></td>
+			</tr>
+		</table>
+	</div>
+</div>
+    </body>
+
+</html>
+
+

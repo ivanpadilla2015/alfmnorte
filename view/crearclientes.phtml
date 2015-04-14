@@ -1,0 +1,55 @@
+<?php
+Conectar::plantilla_menu();
+
+?>
+<div class="container">
+		<div class="well">
+			<h3 align="center">Crear Cliente</h3>
+		</div>
+		<?php
+			if(isset($_GET["m"]))
+			{
+				switch($_GET["m"])
+				{
+			       case '2' :
+		?>
+		            <h2 style="color: green">Datos Grabados Satisfactoriemente</h2>
+		<?php
+				  		 break;
+				   case '3' :
+		?>
+					<h2 style="color: Red">Cliente ya Existe</h2>
+		<?php
+						 break;
+				} 
+			} 
+				
+	   ?>
+	 <form class="well" method="post" name="form" >
+	 	
+	    <label>Identificación</label>
+	    <div class="controls">
+	    	<input type="text" class="span3" name="iden" onblur="buscarcliente(this.value)"  placeholder="Escribe Solo Numeros…" required>
+	    	<span style="color: red" id="mensaje"></span>
+	    </div>
+	   
+	    <label>Nombre</label>
+	    <div class="controls">
+	    	<input type="text" class="span4" name="nom"  placeholder="Escribe Nombre" required>
+	    </div>
+	    <label>telefono</label>
+	     <div class="controls">
+	         	<input  class="span3" type="text"   name="tel" placeholder="telefono" required/> 
+	     </div>
+	    <label>Dirección</label>
+	    <div class="controls">
+	    	<input type="text" class="span4" name="direc"  placeholder="Escribe Nombre" required>
+	    </div>
+	    
+	     <input type="hidden" name="grabar" value="si" />
+	     <button type="submit" class=" btn btn-primary" title="Grabar Cliente">Grabar</button>
+	  </form>
+</div>
+<?php
+ require_once("public/layout/footer.php")
+?>

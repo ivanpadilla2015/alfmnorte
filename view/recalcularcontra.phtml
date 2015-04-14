@@ -1,0 +1,75 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<form name="form" action="" method="post" class="form-horizontal">
+		
+		<div class="control-group">
+	            <label class="control-label" for="select01">Contrato a Recalcular </label>
+	            <div class="controls">
+	              <select name="contra" id="select01" autofocus>
+	              	 <option value="">Seleccione.....</option>
+	              	 <?php foreach($tcon as $d)
+					 	{
+					 ?>
+					    <option value="<?php echo $d["id_contrato"];?>"><?php echo $d["num_contrato"]." => ".substr($d["nombre"],0, 25); ?></option>
+					 <?php
+						}
+					 ?>
+	               </select>
+	            </div>
+	          </div>
+	             <div class="alert alert-success">
+					<?php //$rcon,$rad, $rob
+					    $c=0;$s=0;
+						$b=0;$i=0;
+			          	if(isset($rcon)){
+			          		$c=$c+$rcon["valorcontrato"];
+			          		echo "Valor del contrato :".number_format($rcon["valorcontrato"],2);
+			          	}
+						echo '<br>';
+						echo "_________________________________________________________";
+						echo '<br>';
+			          	if(isset($rad)){
+			          		foreach($rad as $ra){
+			          			$i++;
+			          			$s=$s+$ra["valoradi"];	
+			          			echo "Adicion :".$i." Valor :".number_format($ra["valoradi"],2);echo '<br>';
+			          		}
+			          	}
+						echo "TOTAL ADICION (ES): ".number_format($s,2);
+						echo '<br>';
+						echo "_________________________________________________________";
+						echo '<br>';
+						if(isset($rob)){
+							foreach($rob as $ro){
+								$b=$b+$ro["totalobliga"];
+			          			echo "Obligacion :".$ro["id_obligacion"]." Valor :".number_format($ro["totalobliga"],2);echo '<br>';
+			          		}
+			          	}  
+						echo "TOTAL OBLIGACIONES O BAJAS :".number_format($b,2); 
+						echo '<br>';
+						echo "_________________________________________________________";
+						echo '<br>';
+						echo "CONTRATO + ADICION (ES) :".number_format(($s+$c),2);
+						echo '<br>';
+						echo "SALDO DEL CONTRATO.....:".number_format(($s+$c)-$b,2);  
+		          	?> 
+	          	</div>
+	         
+	          <input type="hidden" name="grabar" value="si" />
+	          <div class="form-actions">
+	            <button type="submit" class="btn btn-primary">Ejecutar</button>
+	            <input class="btn" type="button" " value=" Volver " onclick="volver('<?php echo Conectar::ruta();?>?accion=home')"/>
+          	</div>
+          	
+    </form>
+	
+</div>
+
+
+
+<?php
+ require_once("public/layout/footer.php")
+?>

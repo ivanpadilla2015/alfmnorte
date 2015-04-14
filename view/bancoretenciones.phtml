@@ -1,0 +1,130 @@
+<?php
+Conectar::plantilla_menu();
+?>
+
+<div class="container">
+	<div class="well">
+    			<h2 align="center">Retenciones</h2>
+    </div>
+    <form action="" method="post" name="form">  
+    <center>
+    	 Entre
+	    <input  class="fechajquery"   type="text"  name="feini" placeholder="Fecha Inicial…" required/> y
+			        
+		<input  class="fechajquery"   type="text"  name="fefin" placeholder="Fecha Final…" required/> 
+		<label>Debitado del Banco</label>
+		<div class="controls">
+			<select name="banc" >
+				<option value="0">Seleccionar</option>
+				<?php foreach($lban as $l) 
+				{
+				?>
+					<option value="<?php echo $l["id_banco"];?>"><?php echo $l["nombreban"]." ".$l["cuenta"]; ?></option>
+				<?php 
+				}
+				?>
+			</select>
+		</div>
+		<br /> <br /><br />
+		
+    <table>
+    	<tr>
+    		<td>
+    			<input class="btn btn-primary" type="button"  value=" Compras       " title="Por Compras" onclick="volver('<?php Conectar::ruta() ;?>?accion=reten_compras_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value+
+    			'&id='+document.form.banc.value+'&tipo='+'C'+'&nom='+'COMPRAS')" />
+    			
+    		</td>
+    		<td>
+    			<input class="btn btn-primary" type="button" value="    Hortifruticola  " title="Por Hortifruticola" onclick="volver('<?php Conectar::ruta() ;?>?accion=reten_compras_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value+
+    			'&id='+document.form.banc.value+'&tipo='+'H'+'&nom='+'HORTIFRUTICOLA')" />
+    		</td>
+    		<td>
+    			<input class="btn btn-primary" type="button" " value="    Servicio     " title="Por Servicios" onclick="volver('<?php Conectar::ruta() ;?>?accion=reten_compras_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value+
+    			'&id='+document.form.banc.value+'&tipo='+'S'+'&nom='+'SERVICIO')" />
+    		</td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<input class="btn btn-primary" type="button"  value=" Reteivas        " title="Por Compras" onclick="volver('<?php Conectar::ruta() ;?>?accion=reten_compras_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value+
+    			'&id='+document.form.banc.value+'&tipo='+'R'+'&nom='+'RETEIVA REGIMEN COMUN')" />
+    		</td>
+    		<td>
+    			<input class="btn btn-primary" type="button" value=" Est. Magdalena " title="Est Magdalena" onclick="volver('<?php Conectar::ruta() ;?>?accion=reten_compras_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value+
+    			'&id='+document.form.banc.value+'&tipo='+'E'+'&nom='+'ESTAMPILLA MAGDALENA')" />
+    		</td>
+    		<td>
+    			<input class="btn btn-primary" type="button" " value=" Obras Civiles " title="Por Servicios" onclick="volver('<?php Conectar::ruta() ;?>?accion=reten_compras_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value+
+    			'&id='+document.form.banc.value+'&tipo='+'F'+'&nom='+'OBRAS CIVILES')" />
+    		</td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<input class="btn btn-primary" type="button"  value="  Cree 0.3       " title="Cree 0.3" onclick="volver('<?php Conectar::ruta() ;?>?accion=reten_compras_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value+
+    			'&id='+document.form.banc.value+'&tipo='+'X'+'&nom='+'CREE 0.30')" />
+    		</td>
+    		<td>
+    			<input class="btn btn-primary" type="button" value="      Cree 0.6      " title="Cree 0.6" onclick="volver('<?php Conectar::ruta() ;?>?accion=reten_compras_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value+
+    			'&id='+document.form.banc.value+'&tipo='+'L'+'&nom='+'CREE 0.60')" />
+    		</td>
+    		<td>
+    			<input class="btn btn-primary" type="button" " value="    Cree 1.5    " title="Cree 1.5" onclick="volver('<?php Conectar::ruta() ;?>?accion=reten_compras_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value+
+    			'&id='+document.form.banc.value+'&tipo='+'Z'+'&nom='+'CREE 1.5')" />
+    		</td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<input class="btn btn-primary" type="button"  value="Reteiva Simp" title="Reteiva Rejimen Simplificado" onclick="volver('<?php Conectar::ruta() ;?>?accion=reten_compras_pdf&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value+
+    			'&id='+document.form.banc.value+'&tipo='+'Q'+'&nom='+'RETEIVA REGIMEN SIMPLIFICADO')" />
+    		</td>
+    		<td>
+    			<input class="btn btn-primary" type="button" value="        Todas         " title="Todas las retenciones entre Fecha, Sin escoger el banco" onclick="volver('<?php Conectar::ruta() ;?>?accion=todas_retenciones&fe1='+document.form.feini.value+'&fe2='+document.form.fefin.value)" />
+    		</td>
+    		<td>
+    			<input class="btn btn-primary" type="button" " value="  ...               " title="" onclick="" />
+    		</td>   
+    	</tr>
+    </table>
+    </center>
+    </form>
+</div>
+
+<?php
+ require_once("public/layout/footer.php")
+?>
+

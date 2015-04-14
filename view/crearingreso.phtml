@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <title>Crar Ingreso</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="<?php echo Conectar::ruta();?>/public/css/zebra_form.css">
+        <script src="<?php echo Conectar::ruta();?>/public/js/jquery-1.8.3.js"></script>
+        <script src="<?php echo Conectar::ruta();?>/public/js/zebra_form.js"></script>
+         <script language="javascript" type="text/javascript" src="<?php echo Conectar::ruta();?>public/js/funcionesjquery.js"></script>
+        <style type="text/css">
+        	#formulario
+        	{
+				margin:50px auto;
+				width: 500px;
+				padding: 10px 20px 10px 20px;
+				border-radius:20px;
+				border: 2px dashed #CCC;
+				box-shadow: 0px 0px 5px #000;
+				background: white;
+				
+				}
+        </style>
+ </head>
+
+    <body>
+		<div id="formulario">
+			<?php
+			if(isset($_GET["m"]))
+			{
+				switch($_GET["m"])
+					{
+						       case '1' :
+								   ?>
+								        <h2 style="color: green">Datos Grabados Satisfactoriemente</h2>
+								   <?php
+					}
+			}
+			//$nume=$ca["can"]; esto ya no porque es el mismo nuemro de la planilla es el del ingreso
+			//$nume++;
+			 // include the Zebra_Form class
+				require '/public/Zebra_Form.php';
+				
+				// instantiate a Zebra_Form object
+				$form = new Zebra_Form('form','post','');
+				
+				// numero de planilla
+				$form->add('label', 'label_in', 'numin', 'Numero Ingreso');
+				$obj = &$form->add('text', 'numin',$_GET["npla"]);
+				$obj->set_rule(array( 
+				'required' => array('error', 'Digite Numero Ingreso!'), 
+				 'number'    =>  array('', 'error', 'Solo Numeros!'),
+				));
+				//fecha/*
+				$form->add('label', 'label_fe', 'fein', 'Fecha Ingreso');
+				$obj = &$form->add('date', 'fein',date('Y-m-d'));
+				$obj->set_rule(array('date' => array( 'error','Invalid date!' )));
+				
+				//valor/*
+				$form->add('label', 'label_va', 'valorin', 'Valor Ingreso');
+				$obj = &$form->add('text', 'valorin',$_GET["valo"]);
+				$obj->set_rule(array( 'required' => array('error', 'Digite Numero Ingreso!')));
+				//funcionarios
+				$form->add('label', 'label_fu', 'idf', 'Seleccione Funcionario');
+				$obj = &$form->add('select', 'idf');
+				foreach($funing as $f)
+				{  
+					$data=array($f["id_funcionario"]=>$f["nombre_func"]);
+					$obj->add_options($data); 
+				}
+				$obj->set_rule(array( 'required' => array('error', 'Seleccione el Funcionario!') ));
+				
+		       	$obj = &$form->add('hidden', 'grabar','si');
+				$obj = &$form->add('hidden', 'idpla',$_GET["idp"]);
+				// enviar formulario
+				$form->add('submit', 'btnsubmit', 'Guardar');
+				
+				// validate the form
+				if ($form->validate()) {
+				
+				    // do stuff here
+				 $date = $obj->get_date();
+				}
+				
+				// auto generate output, labels above form elements
+				$form->render();
+				
+				 	?>
+				 <center>
+			    	 <input  type="button" value="Volver" onclick="volver('<?php echo Conectar::ruta()?>?accion=paraingreso')">
+			     </center>
+				<?php
+		  ?>
+	</div>
+    </body>
+
+</html>
+

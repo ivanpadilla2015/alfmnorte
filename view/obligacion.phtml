@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="content-type" content="text/html" />
+	<title>Obligaciones</title>
+	<link rel="stylesheet" href="<?php echo Conectar::ruta();?>public/css/jquery-ui.css" />
+   <script src="<?php echo Conectar::ruta();?>public/js/jquery-1.8.3.js"></script>
+   <script src="<?php echo Conectar::ruta();?>public/js/jquery-ui.js"></script>
+   <link rel="stylesheet" href="<?php echo Conectar::ruta();?>public/css/demos.css" />
+      <script src="<?php echo Conectar::ruta();?>public/js/funciones.js"></script>
+      <script type="text/javascript" src="<?php echo Conectar::ruta();?>public/js/funcionesjquery.js"></script>
+   <script >
+		$(function() {
+		$( "#datepicker" ).datepicker();
+		});
+		function volver()
+		{
+			window.location="<?php echo Conectar::ruta();?>?accion=controlobligacion";
+		}
+						
+	</script>
+	<style type="text/css">
+		  body{
+		  
+		  }
+		  
+			form{
+				margin: 50px auto;
+				width:500px;
+				background-color: #035292;
+				color:white;
+				border-radius: 10px;
+				padding:10px 10px 10px 10px
+			}
+	
+		</style>
+	
+</head>
+
+<body>
+  <h1 align="center"> Crear Documento de Pago</h1>
+<hr />
+<br />
+<a href="<?php echo Conectar::ruta();?>?accion=controlobligacion">Volver </a>
+<?php 
+if(isset($_GET["m"]))
+{	switch($_GET["m"])
+	   {
+	   	      case  2:
+				  ?>
+				    <h2 style="color: #21610B;" align="center">Documento Guardado Exitosamente</h3>
+				  <?php
+				  break;
+	   }
+}
+
+?>
+<form action="" method="post" name="form" onload="limpiar()">
+	  <br />
+	    Contrato:  <select name="id_contra" onChange="from_post_datos(this.value,'deta1','controller/pasardetaController.php')">
+		<option value="0">Seleccione...:</option>
+		<?php 
+		  foreach($dat as $d)
+		  {
+		  ?>	
+			  <option value="<?php echo $d["id_contrato"];?>"> <?php echo substr($d["nombre"],0, 25)." => ".$d["num_contrato"] ;?></option>
+		  <?php	
+		  }
+		?>
+	</select><br /><br />
+	detalle:<br /><textarea id="deta1" name="deta" cols="50" rows="5"></textarea><br /><br />
+	  fecha:<input type="text" id="datepicker"  name="fecha"/> <br /><br />
+	   Funcionario:<select name="funciona">
+		<option value="0">Seleccionar...:</option>
+		<?php 
+		 foreach($fu as $f)
+		 {
+		?>
+		  <option value="<?php echo $f["id_funcionario"]?>" > <?php echo $f["nombre_func"]?></option>
+		<?php 
+		 }
+		?>
+	</select>
+	<input type="hidden" name="grabar" value="si" />
+	 <input type="submit"  value="Grabar" title="Grabar Documento" />
+	 <input type="button" value="Volver" onclick="volver()">
+</form>
+</body>
+</html>

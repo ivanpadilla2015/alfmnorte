@@ -1,0 +1,132 @@
+<?php
+require_once("public/fpdf/fpdf.php");
+class PDF extends FPDF
+{
+		
+		//Cabecera de página
+	
+	function Header()
+	{ 
+	    $this->Image('public/img/header_control_pago.jpg',10,10,250,20);
+		$this->Ln(20);
+		$this->SetFont('Arial','B',10);
+		$enc="BOLETIN DIARIO DE TESORERIA";
+		$w=$this->GetStringWidth($enc);
+		$this->SetX((279-$w)/2);
+	    $this->Cell($w,5,$enc); 
+		$this->Ln(10);
+			 
+			 
+		
+	   		
+	}
+
+	//Pie de página
+	function Footer()
+	{
+	    $this->SetXY(10,-15);
+	    //Arial italic 8
+	    $this->SetFont('Arial','I',8);
+	    //Número de página
+	    $this->Cell(35,5,'CODIGO: F02-PGF-S02');
+		$ver='VERSION: 01';
+		$w=$this->GetStringWidth($ver);
+		$this->SetX((279-$w)/2);
+	    $this->Cell($w,5,$ver); 
+		$ver2='FECHA DE VIGENCIA: 01/04/2009';
+		$w=$this->GetStringWidth($ver2)+10;
+		$this->SetX((279-$w));
+		$this->Cell($w,5,$ver2); 
+	}
+}
+
+$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+$fec= $dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y') ;
+
+$fec=Conectar::FechaTexto($_GET["fe"]);
+$pdf=new PDF('L', 'mm', 'Letter');
+	$pdf->AliasNbPages();
+	$pdf->AddPage();
+	$b1=utf8_decode('BOLETIN DIARIO DE CAJA Y BANCOS N° ');
+	$W=$pdf->GetStringWidth($b1)+6;
+	$pdf->Cell($W,5,$b1,0,0,'L');
+	$pdf->Cell(25,5,$_GET["numbol"],'B',0,'C');
+	$pdf->Cell(70);$pdf->Cell(25,5,"FECHA : ".$fec,0,0,'L');$pdf->SetFont('');
+	$pdf->Ln(10);
+	$pdf->Cell(70,5,'','LTR',0,'C');
+	$pdf->Cell(50,5,'','LTR',0,'C');
+	$pdf->Cell(80,5,'MOVIMIENTOS','LTR',0,'C');
+	$pdf->Cell(50,5,'','LTR',0,'C');
+	$pdf->Ln();
+	$pdf->Cell(70,5,'DETALLE','LRB',0,'C');
+	$pdf->Cell(50,5,'SALDO ANTERIOR','LRB',0,'C');
+	$pdf->Cell(40,5,'INGRESOS',1,0,'C');
+	$pdf->Cell(40,5,'EGRESOS',1,0,'C');
+	$pdf->Cell(50,5,'SALDO SIGUIENTE','LRB',0,'C');
+	$pdf->Ln();
+	$salante=0;
+	$saling=0;$salegre=0;$salres=0;
+	foreach($un as $d)
+	{
+		$pdf->Cell(70,5,$d["nombreban"]." ".$d["cuenta"],1,0,'L');
+		$pdf->Cell(50,5,number_format($d["vienen"],2),1,0,'R');
+		$pdf->Cell(40,5,number_format($d["valingre"],2),1,0,'R');
+		$pdf->Cell(40,5,number_format($d["valegre"],2),1,0,'R');
+		$sal=($d["vienen"] + $d["valingre"])-$d["valegre"];
+		$pdf->Cell(50,5,number_format($sal,2),1,0,'R');
+		$salante +=$d["vienen"];$saling +=$d["valingre"];$salegre +=$d["valegre"];
+		$salres +=$sal;
+		$pdf->Ln();
+	}
+	$pdf->Cell(70,5,'',1,0,'L');
+	$pdf->Cell(50,5,'',1,0,'R');
+	$pdf->Cell(40,5,'',1,0,'R');
+	$pdf->Cell(40,5,'',1,0,'R');
+	$pdf->Cell(50,5,'',1,0,'R');
+	$pdf->Ln();
+	$pdf->Cell(70,5,'',1,0,'L');
+	$pdf->Cell(50,5,'',1,0,'R');
+	$pdf->Cell(40,5,'',1,0,'R');
+	$pdf->Cell(40,5,'',1,0,'R');
+	$pdf->Cell(50,5,'',1,0,'R');
+	$pdf->Ln();
+	$pdf->SetFillColor(192,192,192);
+	$pdf->SetFont('Arial','',10);
+	$pdf->Cell(70,5,'TOTALES BANCOS',1,0,'C',true);
+	$pdf->Cell(50,5,number_format($salante,2),1,0,'R',true);
+	$pdf->Cell(40,5,number_format($saling,2),1,0,'R',true);
+	$pdf->Cell(40,5,number_format($salegre,2),1,0,'R',true);
+	$pdf->Cell(50,5,number_format($salres,2),1,0,'R',true);
+	$pdf->Ln();
+	$pdf->Cell(70,5,'VALORES EN CUSTODIA',1,0,'C',true);
+	$pdf->Cell(50,5,number_format($_GET["vcvie"],2),1,0,'R',true);
+	$pdf->Cell(40,5,number_format($_GET["ingrecus"],2),1,0,'R',true);
+	$pdf->Cell(40,5,number_format($_GET["egrecus"],2),1,0,'R',true);
+	$vcusto=($_GET["vcvie"] + $_GET["ingrecus"]) - $_GET["egrecus"];
+	$pdf->Cell(50,5,number_format($vcusto,2),1,0,'R',true);
+	$pdf->Ln();
+	$pdf->Cell(70,5,'',1,0,'L');
+	$pdf->Cell(50,5,'',1,0,'R');
+	$pdf->Cell(40,5,'',1,0,'R');
+	$pdf->Cell(40,5,'',1,0,'R');
+	$pdf->Cell(50,5,'',1,0,'R');
+	$pdf->Ln();
+	$pdf->Cell(70,5,'',1,0,'L');
+	$pdf->Cell(50,5,'',1,0,'R');
+	$pdf->Cell(40,5,'',1,0,'R');
+	$pdf->Cell(40,5,'',1,0,'R');
+	$pdf->Cell(50,5,'',1,0,'R');
+	$pdf->Ln();$pdf->Ln();$pdf->Ln();
+	$pdf->SetFont('Arial','B',10);
+	$coor="S-1  23  ANGELICA ROA BORRE";
+	$w=$pdf->GetStringWidth($coor);
+	$pdf->SetX((279-$w)/2);
+	$pdf->Cell($w,5,$coor); 
+	$pdf->Ln();
+	$grup="Coordinador(a) Grupo de Tesoreria";
+	$w=$pdf->GetStringWidth($grup);
+	$pdf->SetX((279-$w)/2);
+	$pdf->Cell($w,5,$grup); 
+$pdf->Output();
+?>
